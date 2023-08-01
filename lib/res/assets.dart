@@ -1,0 +1,44 @@
+class AppImages {
+  static const String _rootImagePath = "assets";
+
+  static const String bgLogin = "$_rootImagePath/bg_login.png";
+  static const String bgSplash = "$_rootImagePath/bg_splash.png";
+  static const String icCalendar = "$_rootImagePath/ic_calendar.svg";
+  static const String icCamera = "$_rootImagePath/ic_camera.svg";
+  static const String icDone = "$_rootImagePath/ic_done.svg";
+  static const String icEmail = "$_rootImagePath/ic_email.svg";
+  static const String icEye = "$_rootImagePath/ic_eye.svg";
+  static const String icFavourite = "$_rootImagePath/ic_favourite.svg";
+  static const String icFirstWinner = "$_rootImagePath/ic_first_winner.png";
+  static const String icGoogle = "$_rootImagePath/ic_google.svg";
+  static const String icHome = "$_rootImagePath/ic_home.svg";
+  static const String icInstagram = "$_rootImagePath/ic_instagram.svg";
+  static const String icLightBulb = "$_rootImagePath/ic_light_bulb.svg";
+  static const String icLinkedIn = "$_rootImagePath/ic_linkedin.svg";
+  static const String icLogo = "$_rootImagePath/ic_logo.png";
+  static const String icPhone = "$_rootImagePath/ic_phone.svg";
+  static const String icRupee = "$_rootImagePath/ic_rupee.svg";
+  static const String icRupeeCircle = "$_rootImagePath/ic_rupee_circle.svg";
+  static const String icSearch = "$_rootImagePath/ic_search.svg";
+  static const String icSecondWinner = "$_rootImagePath/ic_second_winner.png";
+  static const String icStar = "$_rootImagePath/ic_star.svg";
+  static const String icThirdWinner = "$_rootImagePath/ic_third_winner.png";
+  static const String icTwitter = "$_rootImagePath/ic_twitter.svg";
+  static const String icUserCircle = "$_rootImagePath/ic_user_circle.svg";
+  static const String imgDeleteUser = "$_rootImagePath/img_delete_any_user.svg";
+  static const String imgEarn = "$_rootImagePath/img_earn.png";
+  static const String imgGrowth = "$_rootImagePath/img_growth.png";
+  static const String imgLearn = "$_rootImagePath/img_learn.png";
+  static const String imgLogo = "$_rootImagePath/img_logo.png";
+  static const String imgShare = "$_rootImagePath/img_share.png";
+  static const String imgSplash = "$_rootImagePath/img_splash.png";
+  static const String imgSuccess = "$_rootImagePath/img_success.png";
+  static const String icAdd = '$_rootImagePath/ic_add.svg';
+  static const String imgLoading = '$_rootImagePath/img_loading.png';
+  static const String icHomeFilled = '$_rootImagePath/ic_home_filled.svg';
+  static const String icSearchFilled = '$_rootImagePath/ic_search_filled.svg';
+  static const String icLightBulbFilled = '$_rootImagePath/ic_light_bulb_filled.svg';
+  static const String icRupeeCircleFilled = '$_rootImagePath/ic_rupee_circle_filled.svg';
+  static const String icUserCircleFilled = '$_rootImagePath/ic_user_circle_filled.svg';
+  static const String icUploadAction = '$_rootImagePath/ic_upload_action.svg';
+}

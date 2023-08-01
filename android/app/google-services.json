@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "477952135910",
+    "project_id": "lseg-5363b",
+    "storage_bucket": "lseg-5363b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477952135910:android:b716945d05fdc0a263a127",
+        "android_client_info": {
+          "package_name": "com.example.lseg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477952135910-gh04ja8mutiu6cs7eckek7k06qgjflni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6BFnR7LnAdjuN99LhvmeIwhbw_hGuzyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477952135910-gh04ja8mutiu6cs7eckek7k06qgjflni.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
