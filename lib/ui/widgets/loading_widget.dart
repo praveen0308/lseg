@@ -66,7 +66,7 @@ class _CustomLoadingState extends State<CustomLoading>
 
   Widget _buildLoadingTwo() {
     return Stack(alignment: Alignment.center, children: [
-      SvgPicture.asset(
+      Image.asset(
         AppImages.icLogo,
         height: 70,
         width: 70,

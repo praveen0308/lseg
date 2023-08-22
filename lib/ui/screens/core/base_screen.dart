@@ -32,6 +32,7 @@ class BaseScreen extends StatefulWidget {
   final VoidCallback? onSecondaryClick;
   final bool? isToolbarStacked;
   final Color? toolbarBackgroundColor;
+  final ScrollController? scrollController;
 
   final Function(dynamic data)? navigationCallback;
 
@@ -60,7 +61,7 @@ class BaseScreen extends StatefulWidget {
         vertical: AppDimens.appVerticalPadding),
     this.toolbarController,
     this.onPrimaryActionClick,
-    this.onSecondaryClick, this.isToolbarStacked=false, this.toolbarBackgroundColor,
+    this.onSecondaryClick, this.isToolbarStacked=false, this.toolbarBackgroundColor, this.scrollController,
   }) : super(key: key);
 
   @override
@@ -87,7 +88,6 @@ class _BaseScreenState extends State<BaseScreen> with BasePageState {
   @override
   void initState() {
     checkInternetConnection();
-    super.initState();
     _scrollController.addListener(_scrollListener);
 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -174,6 +174,7 @@ class _BaseScreenState extends State<BaseScreen> with BasePageState {
                 ? ScrollConfiguration(
                     behavior: NoGlowBehaviour(),
                     child: SingleChildScrollView(
+                      controller: widget.scrollController,
                       physics: const ScrollPhysics(),
                       child: Padding(
                         padding: widget.pagePadding,

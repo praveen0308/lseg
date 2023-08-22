@@ -9,7 +9,7 @@ import 'package:lseg/routes/route_imports.gr.dart';
 import 'package:lseg/ui/screens/core/base_page.dart';
 import 'package:lseg/ui/screens/core/base_screen.dart';
 import 'package:lseg/ui/screens/withdraw_money/withdrawal_success_dialog.dart';
-import 'package:lseg/ui/widgets/text_input.dart';
+import 'package:lseg/ui/widgets/widgets.dart';
 
 import 'withdraw_money_screen_cubit.dart';
 
@@ -39,7 +39,7 @@ class _WithdrawMoneyScreenState extends State<WithdrawMoneyScreen> with BasePage
             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
           ),
           vGap(),
-          TextInput(label: AppStrings.paymentDetails, textEditingController: TextEditingController()),
+          TextInputFieldView(label: AppStrings.paymentDetails, textEditingController: TextEditingController()),
           label(AppStrings.amount),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),

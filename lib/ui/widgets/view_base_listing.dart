@@ -17,7 +17,7 @@ class BaseListingView extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 0.0),
             child: ScrollConfiguration(
               behavior: NoGlowBehaviour(),
               child: GridView.builder(
@@ -29,7 +29,7 @@ class BaseListingView extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 itemCount: 12,
                 itemBuilder: (BuildContext context, int index) {
-                  return CourseItemView();
+                  // return Conte();
                 },
               ),
             ),

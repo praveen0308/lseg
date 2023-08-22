@@ -19,7 +19,6 @@ dependencies:
   flutter_svg: ^2.0.7
   flutter_bloc: ^8.1.3
   logger: ^1.4.0
-
   flutter_smart_dialog: ^4.9.0+4
   flutter_secure_storage: ^8.0.0
   shared_preferences: ^2.0.20
@@ -38,6 +37,19 @@ dependencies:
 
   carousel_slider: ^4.2.1
   flutter_rating_bar: ^4.0.1
+  firebase_auth: ^4.7.2
+  cloud_firestore: ^4.8.4
+  firebase_storage: ^11.2.5
+  google_sign_in: ^6.1.4
+  form_validator: ^2.1.1
+  path_provider: ^2.0.15
+  flutter_image_compress: ^2.0.4
+  unity_ads_plugin: ^0.3.8
+  syncfusion_flutter_pdfviewer: ^22.2.8
+  excel: ^2.1.0
+  search_choices: ^2.2.6
+  firebase_remote_config: ^4.2.5
+  flutter_widget_from_html: ^0.10.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -52,6 +64,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - raw/
   fonts:
     - family: DMSans
       fonts:

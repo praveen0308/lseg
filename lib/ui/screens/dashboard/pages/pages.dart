@@ -1,5 +1,9 @@
 export 'home/home_page.dart';
+export 'home/home_page_cubit.dart';
 export 'leaderboard/learderboard_page.dart';
+export 'leaderboard/leaderboard_page_cubit.dart';
 export 'profile/profile_page.dart';
+export 'profile/profile_page_cubit.dart';
 export 'search/search_page.dart';
+export 'search/search_page_cubit.dart';
 export 'upload/upload_page.dart';

@@ -1,8 +1,9 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:lseg/data/remote/firebase_data_source/config_manager.dart';
 import 'package:lseg/res/res.dart';
 import 'package:lseg/ui/screens/core/base_screen.dart';
-import 'package:lseg/ui/widgets/text_input.dart';
+import 'package:lseg/ui/widgets/widgets.dart';
 
 @RoutePage()
 class FAQScreen extends StatefulWidget {
@@ -13,7 +14,13 @@ class FAQScreen extends StatefulWidget {
 }
 
 class _FAQScreenState extends State<FAQScreen> {
-  final faqItems = AppConstants.faqItems;
+  final faqItems = ConfigManager.instance.fetchFaqs();
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +39,7 @@ class _FAQScreenState extends State<FAQScreen> {
             children: List.generate(
             faqItems.length,
             (index) =>
-                faqItem(faqItems[index].question, faqItems[index].answer)),
+                faqItem(faqItems[index].question!, faqItems[index].answer!)),
           )
         ],
       ),
@@ -40,10 +47,20 @@ class _FAQScreenState extends State<FAQScreen> {
   }
 
   Widget faqItem(String question, String answer) {
-    return TextInput(
-      label: question,
-      textEditingController: TextEditingController(text: answer),
-      isEnabled: false,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(question,style:const TextStyle(fontWeight: FontWeight.w700,fontSize: 16,color: Colors.black),),
+        const SizedBox(height: 8,),
+        Text(answer),
+        /*TextInputFieldView(
+          label: question,
+          textEditingController: TextEditingController(text: answer),
+          lines: 10,
+          isEnabled: false,
+        ),*/
+        const SizedBox(height: 16,),
+      ],
     );
   }
 }

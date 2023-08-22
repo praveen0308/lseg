@@ -19,8 +19,12 @@ class AppStrings{
   static const getStartedWithGoogle = "Get Started with Google";
   static const iAgreeTnC = "I agree with <b>Terms</b> and <b>Privacy</b>";
   static const userName = "Username";
-  static const name = "Username";
+  static const name = "Name";
   static const dob = "Date of Birth";
+  static const email = "Email";
+  static const phoneNumber = "Phone Number";
+  static const website = "Website";
+  static const city = "City";
   static const gender = "Gender";
   static const profileInstruction = "Please complete the profile.";
   static const submit = "Submit";
@@ -56,6 +60,7 @@ class AppStrings{
   static const profile = "Profile";
   static const editProfile = "Edit Profile";
   static const myContent = "My Content";
+  static const purchasedContent = "Purchased Content";
   static const myWallet = "My Wallet";
   static const faq = "FAQ";
   static const favourites = "Favourites";

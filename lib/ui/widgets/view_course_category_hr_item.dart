@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lseg/ui/widgets/view_course_item.dart';
-
 class CourseCategoryHrItemView extends StatelessWidget {
 
   const CourseCategoryHrItemView({super.key});
@@ -29,11 +27,7 @@ class CourseCategoryHrItemView extends StatelessWidget {
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             children: [
-              CourseItemView(),
-              CourseItemView(),
-              CourseItemView(),
-              CourseItemView(),
-              CourseItemView(),
+
             ],
           ),
         )

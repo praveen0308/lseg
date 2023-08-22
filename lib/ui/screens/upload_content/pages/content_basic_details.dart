@@ -1,9 +1,13 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lseg/domain/domain.dart';
 import 'package:lseg/res/res.dart';
 import 'package:lseg/ui/screens/core/base_page.dart';
-import 'package:lseg/ui/widgets/text_input.dart';
+import 'package:lseg/ui/screens/upload_content/upload_content_screen_cubit.dart';
+import 'package:lseg/ui/widgets/widgets.dart';
 import 'package:lseg/utils/no_glow_behaviour.dart';
+import 'package:search_choices/search_choices.dart';
 
 class ContentBasicDetails extends StatefulWidget {
   const ContentBasicDetails({super.key});
@@ -17,197 +21,122 @@ class _ContentBasicDetailsState extends State<ContentBasicDetails>
   final _title = TextEditingController();
   final _subTitle = TextEditingController();
   final contentFormats = ["Handwritten", "Computerized"];
-  final categories = ["Category1", "Category2"];
-  final subCategories = ["Subcategory1", "Subcategory2"];
 
-  var selectedContentFormat = "";
-  var selectedCategory = "";
-  var selectedSubcategory = "";
+
   final _description = TextEditingController();
+  final _formatController = DropdownFieldViewController<String>();
+  final _categoriesController = DropdownFieldViewController<CategoryModel>();
+  final _contentBasicDetailsKey = GlobalKey<FormState>();
+  CategoryModel? selectedCategory;
+  var categories = List<DropdownMenuItem<CategoryModel>>.empty(growable: true);
+
+  @override
+  void initState() {
+    _formatController.setDropdownItems(contentFormats);
+
+    super.initState();
+    BlocProvider.of<UploadContentScreenCubit>(context).loadCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: ScrollConfiguration(
-        behavior: NoGlowBehaviour(),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextInput(label: AppStrings.title, textEditingController: _title,placeHolder: "Enter title",),
-              TextInput(label: AppStrings.subTitle, textEditingController: _subTitle,placeHolder: "Enter subtitle"),
-              label(AppStrings.format),
-              DropdownButtonFormField2<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  // Add more decoration..
+    return BlocListener<UploadContentScreenCubit, UploadContentScreenState>(
+      listener: (context, state) {
+        if(state is ReceivedCategories){
+          _categoriesController.setDropdownItems(state.categories);
+          categories.clear();
+          for(var category in state.categories){
+            categories.add(DropdownMenuItem(value: category,child: Text(category.toString()),));
+          }
+          // selectedCategory = categories[0].value;
+          setState(() {});
+        }
+        if(state is ValidateBasicDetails){
+          if(_contentBasicDetailsKey.currentState!.validate()){
+            BlocProvider.of<UploadContentScreenCubit>(context).submitContentBasicDetails(
+              title: _title.text,
+              subTitle: _subTitle.text,
+              description: _description.text,
+              category: selectedCategory,
+              format: _formatController.value
+            );
+          }
+        }
+      },
+      child: Form(
+        key: _contentBasicDetailsKey,
+        child: ScrollConfiguration(
+          behavior: NoGlowBehaviour(),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextInputFieldView(
+                  label: AppStrings.title,
+                  textEditingController: _title,
+                  placeHolder: "Enter title",
                 ),
-                hint: const Text(
-                  'Select Format',
-                  style: TextStyle(fontSize: 14),
-                ),
-                items: contentFormats
-                    .map((item) => DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select format.';
+                TextInputFieldView(
+                    label: AppStrings.subTitle,
+                    textEditingController: _subTitle,
+                    placeHolder: "Enter subtitle"),
+                DropdownFieldView<String>(
+                  controller: _formatController,
+                  label: AppStrings.format,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select format.';
+                    }
+                    return null;
                   }
-                  return null;
-                },
-                onChanged: (value) {
-                  //Do something when selected item is changed.
-                },
-                onSaved: (value) {
-                  selectedContentFormat = value.toString();
-                },
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.only(right: 8),
                 ),
-                iconStyleData: const IconStyleData(
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black45,
-                  ),
-                  iconSize: 24,
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                ),
-              ),
-              label(AppStrings.categories),
-              DropdownButtonFormField2<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  // Add more decoration..
-                ),
-                hint: const Text(
-                  'Select Category',
-                  style: TextStyle(fontSize: 14),
-                ),
-                items: categories
-                    .map((item) => DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select category.';
+                /*DropdownFieldView<CategoryModel>(
+                  controller: _categoriesController,
+                  label: AppStrings.categories,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select category.';
+                    }
+                    return null;
                   }
-                  return null;
-                },
-                onChanged: (value) {
-                  //Do something when selected item is changed.
-                },
-                onSaved: (value) {
-                  selectedCategory = value.toString();
-                },
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.only(right: 8),
-                ),
-                iconStyleData: const IconStyleData(
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black45,
-                  ),
-                  iconSize: 24,
-                ),
-                dropdownStyleData: DropdownStyleData(
+                ),*/
+                label("Category"),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all()
+                  ),
+                  child: SearchChoices.single(
+                    displayClearIcon: false,
+                    underline: "",
+                    padding: const EdgeInsets.all(5),
+                    items: categories,
+                    value: selectedCategory,
+                    hint: "Select one",
+                    searchHint: "Select one",
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCategory = value;
+                      });
+                    },
+                    isExpanded: true,
                   ),
                 ),
-                menuItemStyleData: const MenuItemStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                ),
-              ),
-              label(AppStrings.subCategory),
-              DropdownButtonFormField2<String>(
-                isExpanded: true,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  // Add more decoration..
-                ),
-                hint: const Text(
-                  'Select Subcategory',
-                  style: TextStyle(fontSize: 14),
-                ),
-                items: subCategories
-                    .map((item) => DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select subcategory.';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  //Do something when selected item is changed.
-                },
-                onSaved: (value) {
-                  selectedSubcategory = value.toString();
-                },
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.only(right: 8),
-                ),
-                iconStyleData: const IconStyleData(
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black45,
-                  ),
-                  iconSize: 24,
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                ),
-              ),
-              TextInput(label: AppStrings.description, textEditingController: _description,placeHolder: "Enter description"),
-              vGap()
-            ],
+                TextInputFieldView(
+                    label: AppStrings.description,
+                    textEditingController: _description,
+                    placeHolder: "Enter description"),
+                vGap(height: 32),
+                ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<UploadContentScreenCubit>(context)
+                          .validateBasicDetails();
+                    },
+                    child: const Text(AppStrings.next))
+              ],
+            ),
           ),
         ),
       ),

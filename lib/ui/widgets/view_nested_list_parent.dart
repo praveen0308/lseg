@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lseg/ui/widgets/btn_action.dart';
-import 'package:lseg/ui/widgets/view_course_item.dart';
 
 class NestedListParentView extends StatelessWidget {
   final String title;
@@ -33,9 +32,9 @@ class NestedListParentView extends StatelessWidget {
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index) {
-                return CourseItemView();
+                // return CourseItemView();
               },
-              itemCount: 6,
+              itemCount: 6, 
             ),
           )
         ],

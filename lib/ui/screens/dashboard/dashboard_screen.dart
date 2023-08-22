@@ -1,14 +1,18 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lseg/data/data.dart';
+import 'package:lseg/domain/domain.dart';
+import 'package:lseg/domain/repository/user_repository_impl.dart';
 import 'package:lseg/res/res.dart';
 import 'package:lseg/routes/route_imports.gr.dart';
 import 'package:lseg/ui/screens/core/base_screen.dart';
 import 'package:lseg/ui/screens/dashboard/dashboard_screen_cubit.dart';
+import 'package:lseg/ui/screens/dashboard/pages/leaderboard/leaderboard_page_cubit.dart';
 import 'package:lseg/ui/widgets/toolbar_main.dart';
 import 'pages/pages.dart';
+
 
 @RoutePage()
 class DashboardScreen extends StatefulWidget implements AutoRouteWrapper {
@@ -42,8 +46,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       applyScroll: false,
       homeAppBar: true,
       pagePadding: const EdgeInsets.all(0),
-      onPrimaryActionClick: (){},
-      onSecondaryClick: (){
+      onPrimaryActionClick: () {},
+      onSecondaryClick: () {
         AutoRouter.of(context).push(const FavouritesRoute());
       },
       body: Column(
@@ -52,12 +56,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: PageView(
             physics: const NeverScrollableScrollPhysics(),
             controller: _dashboardPageController,
-            children: const [
-              HomePage(),
-              SearchPage(),
-              UploadPage(),
-              LeaderboardPage(),
-              ProfilePage(),
+            children: [
+              BlocProvider(
+                  create: (_) => HomePageCubit(RepositoryProvider.of<GetHomeListing>(context)),
+                  child: const HomePage()),
+              BlocProvider(
+                  create: (_) => SearchPageCubit(RepositoryProvider.of<CategoryRepositoryImpl>(context)),
+                  child: const SearchPage()),
+              Container(),
+              BlocProvider(
+                  create: (_) => LeaderboardPageCubit(),
+                  child: const LeaderboardPage()),
+              BlocProvider(
+                  create: (_) => ProfilePageCubit(
+                      RepositoryProvider.of<UserRepositoryImpl>(context)),
+                  child: const ProfilePage())
             ],
           )),
         ],

@@ -2,16 +2,17 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lseg/local/app_storage.dart';
+import 'package:lseg/domain/domain.dart';
 import 'package:lseg/res/res.dart';
 import 'package:lseg/routes/route_imports.gr.dart';
 import 'package:lseg/ui/screens/core/base_page.dart';
 import 'package:lseg/ui/screens/core/base_screen.dart';
-import 'package:lseg/ui/screens/registration/final_step_page/final_step_page.dart';
 import 'package:lseg/ui/screens/registration/registration_screen_cubit.dart';
-import 'package:lseg/ui/screens/registration/welcome_page/welcome_page.dart';
 import 'package:lseg/ui/widgets/widgets.dart';
 import 'package:lseg/utils/util_methods.dart';
+
+import 'pages/final_step_page.dart';
+import 'pages/welcome_page.dart';
 
 @RoutePage()
 class RegistrationScreen extends StatefulWidget implements AutoRouteWrapper {
@@ -24,14 +25,20 @@ class RegistrationScreen extends StatefulWidget implements AutoRouteWrapper {
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
         create: (ctx) => RegistrationScreenCubit(
-          RepositoryProvider.of<AppStorage>(context)
-        ), child: this);
+            RepositoryProvider.of<AuthRepositoryImpl>(context)),
+        child: this);
   }
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen>
     with BasePageState {
   final _pageController = PageController();
+
+  @override
+  void initState() {
+    BlocProvider.of<RegistrationScreenCubit>(context).initRegistration();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +64,19 @@ class _RegistrationScreenState extends State<RegistrationScreen>
             children: [
               Expanded(
                 child: PageView(
+
                   physics: const NeverScrollableScrollPhysics(),
                   controller: _pageController,
-                  children: const [WelcomePage(), FinalStepPage()],
+                  children: [
+                    BlocProvider.value(
+                      value: context.read<RegistrationScreenCubit>(),
+                      child: const WelcomePage(),
+                    ),
+                    BlocProvider.value(
+                      value: context.read<RegistrationScreenCubit>(),
+                      child: const FinalStepPage(),
+                    )
+                  ],
                 ),
               ),
               BlocBuilder<RegistrationScreenCubit, RegistrationScreenState>(
@@ -76,7 +93,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                         ElevatedButton(
                             onPressed: () {
                               BlocProvider.of<RegistrationScreenCubit>(context)
-                                  .submitWelcomeData();
+                                  .validateWelcomePage();
                             },
                             child: const Text(AppStrings.next)),
                       if (BlocProvider.of<RegistrationScreenCubit>(context)
@@ -84,7 +101,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                         ElevatedButton(
                             onPressed: () {
                               BlocProvider.of<RegistrationScreenCubit>(context)
-                                  .submitFinalData();
+                                  .validateFinalStepPage();
                             },
                             child: const Text(AppStrings.submit)),
                       vGap(),
