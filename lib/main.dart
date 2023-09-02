@@ -21,12 +21,14 @@ Future<void> main() async {
   );
 
   await initRemoteConfig(FirebaseRemoteConfig.instance);
+/*
   UnityAds.init(
-    gameId: '5381236',
+    gameId: '5390827',
     onComplete: () => print('Initialization Complete'),
     onFailed: (error, message) =>
         print('Initialization Failed: $error $message'),
   );
+*/
 
   // await FirebaseAuth.instance.useAuthEmulator('10.0.2.2', 9099);
   runApp(MyApp());

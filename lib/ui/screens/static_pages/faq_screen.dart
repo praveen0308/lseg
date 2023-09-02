@@ -25,6 +25,7 @@ class _FAQScreenState extends State<FAQScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
+      toolbarActionEnabled: false,
       body: Column(
         children: [
           const Center(
@@ -52,7 +53,13 @@ class _FAQScreenState extends State<FAQScreen> {
       children: [
         Text(question,style:const TextStyle(fontWeight: FontWeight.w700,fontSize: 16,color: Colors.black),),
         const SizedBox(height: 8,),
-        Text(answer),
+        Container(
+          padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(8)
+            ),
+            child: Text(answer,textAlign: TextAlign.justify,)),
         /*TextInputFieldView(
           label: question,
           textEditingController: TextEditingController(text: answer),

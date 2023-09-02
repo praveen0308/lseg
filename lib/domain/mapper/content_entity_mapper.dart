@@ -4,6 +4,8 @@ import 'package:lseg/domain/mapper/review_entity_mapper.dart';
 import 'package:lseg/domain/models/content_model.dart';
 import 'package:lseg/local/local.dart';
 
+import 'content_data_entity_mapper.dart';
+
 class ContentEntityMapper {
   final AppStorage _appStorage;
   late String userId;
@@ -32,9 +34,7 @@ class ContentEntityMapper {
       description: domain.description,
       isPaid: domain.isPaid,
       price: domain.price,
-      contentUrl: domain.contentUrl,
-      audioUrl: domain.audioUrl,
-      thumbnailUrl: domain.thumbnailUrl,
+      contentData: ContentDataEntityMapper().fromDomain(domain.contentData),
       reviews: domain.reviews
           ?.map((e) => ReviewEntityMapper().fromDomain(e))
           .toList(),
@@ -66,9 +66,7 @@ class ContentEntityMapper {
         description: entity?.description,
         isPaid: entity?.isPaid,
         price: entity?.price,
-        contentUrl: entity?.contentUrl,
-        audioUrl: entity?.audioUrl,
-        thumbnailUrl: entity?.thumbnailUrl,
+        contentData: ContentDataEntityMapper().toDomain(entity?.contentData),
         reviews:
         entity?.reviews?.map((e) => ReviewEntityMapper().toDomain(e)).toList(),
         addedOn: entity?.addedOn,

@@ -10,12 +10,12 @@ abstract class ContentRepository{
 
   Future<List<ContentModel>> getContentByCategory(String categoryId);
 
-  Future<List<ContentModel>> getTrendingContents();
+  Future<List<ContentModel>> getTrendingContents({int limit = 10});
 
-  Future<List<ContentModel>> getPopularContents();
+  Future<List<ContentModel>> getPopularContents({int limit = 10});
 
   Future<List<ContentModel>> getRecommendedContent(String userId);
-  Future<List<ContentModel>> getRecommendedContentOfCategory(String categoryId);
+  Future<List<ContentModel>> getRecommendedContentOfCategory(String categoryId,{int limit = 10});
 
   Future<List<ContentModel>> getContentByCreator({String? userId});
 

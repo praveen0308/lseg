@@ -11,12 +11,13 @@ abstract class ContentService {
 
   Future<List<ContentEntity>?> getContentByCategory(String categoryId);
 
-  Future<List<ContentEntity>?> getTrendingContents();
+  Future<List<ContentEntity>?> getTrendingContents({int limit = 10});
 
-  Future<List<ContentEntity>?> getPopularContents();
+  Future<List<ContentEntity>?> getPopularContents({int limit = 10});
 
   Future<List<ContentEntity>?> getRecommendedContent(String userId);
-  Future<List<ContentEntity>?> getRecommendedContentOfCategory(String categoryId);
+
+  Future<List<ContentEntity>?> getRecommendedContentOfCategory(String categoryId,{int limit = 10});
 
   Future<List<ContentEntity>?> getContentByCreator(String userId);
 

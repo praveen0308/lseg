@@ -58,11 +58,14 @@ class _CategoryContentScreenState extends State<CategoryContentScreen> with Base
                 );
               }
               if (state is NoContents) {
-                return const Column(
-                  children: [
-                    Icon(Icons.folder_copy_outlined),
-                    Text("No Data Found!!!")
-                  ],
+                return const Expanded(
+                  child:  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.folder_copy_outlined,size: 50,),
+                      Text("No Data Found!!!")
+                    ],
+                  ),
                 );
               }
               if (state is ReceivedContents) {

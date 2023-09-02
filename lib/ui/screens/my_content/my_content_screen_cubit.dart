@@ -22,4 +22,17 @@ class MyContentScreenCubit extends Cubit<MyContentScreenState> with BaseCubit{
       logger.e(e);
     }
   }
+
+
+  Future<void> deleteContent(String contentId) async {
+    emit(DeletingContent());
+    try{
+       await _contentRepositoryImpl.deleteContent(contentId);
+      emit(DeletedSuccessfully());
+      loadContents();
+    }catch(e){
+      logger.e(e);
+      emit(DeletionFailed());
+    }
+  }
 }

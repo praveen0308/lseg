@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lseg/data/data.dart';
+import 'package:lseg/domain/domain.dart';
 
 import 'firestore_config.dart';
 
@@ -52,12 +53,23 @@ class FirebaseUserService extends UserService {
   }
 
   @override
-  Future<UserEntity> getCreatorDetails(String userId) async {
+  Future<UserEntity> getUserDetails(String userId) async {
     try {
       var response = await users.doc(userId).get();
       var user = UserEntity.fromJson(response);
       return user;
     } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  @override
+  Future<num> getUserWalletBalance(String userId) async{
+    try{
+      var rUser = await users.doc(userId).get();
+      var user = UserEntity.fromJson(rUser);
+      return user.currentBalance ?? 0;
+    }catch (e) {
       throw Exception(e);
     }
   }

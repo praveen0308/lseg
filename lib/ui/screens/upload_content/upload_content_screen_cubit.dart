@@ -117,7 +117,7 @@ class UploadContentScreenCubit extends Cubit<UploadContentScreenState>
   Future<void> uploadContentPdf() async {
     emit(UploadingContentPdf(0));
     uploadPdfTask = storageRef
-        .child(contentModel!.contentUrl!)
+        .child(contentModel!.contentData!.contentPath!)
         .putFile(selectedContentPdf!, pdfMetadata);
     uploadPdfTask?.snapshotEvents.listen((TaskSnapshot taskSnapshot) async {
       switch (taskSnapshot.state) {
@@ -138,7 +138,7 @@ class UploadContentScreenCubit extends Cubit<UploadContentScreenState>
           break;
         case TaskState.success:
           var downloadUrl = await taskSnapshot.ref.getDownloadURL();
-          contentModel?.contentUrl = downloadUrl;
+          contentModel!.contentData?.contentUrl = downloadUrl;
           emit(ContentPdfUploadedSuccessfully());
 
           break;
@@ -151,7 +151,7 @@ class UploadContentScreenCubit extends Cubit<UploadContentScreenState>
         await compressContentThumbnailFile(selectedContentThumbnail!);
     emit(UploadingContentThumbnail(0));
     uploadThumbnailTask = storageRef
-        .child(contentModel!.thumbnailUrl!)
+        .child(contentModel!.contentData!.thumbnailPath!)
         .putFile(compressResultFile, thumbnailMetadata);
     uploadThumbnailTask?.snapshotEvents
         .listen((TaskSnapshot taskSnapshot) async {
@@ -173,7 +173,7 @@ class UploadContentScreenCubit extends Cubit<UploadContentScreenState>
           break;
         case TaskState.success:
           var downloadUrl = await taskSnapshot.ref.getDownloadURL();
-          contentModel?.thumbnailUrl = downloadUrl;
+          contentModel!.contentData?.thumbnailUrl = downloadUrl;
           emit(ContentThumbnailUploadedSuccessfully());
           break;
       }

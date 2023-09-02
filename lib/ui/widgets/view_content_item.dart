@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lseg/domain/domain.dart';
 import 'package:lseg/res/res.dart';
 import 'package:lseg/routes/route_imports.gr.dart';
@@ -30,7 +29,7 @@ class ContentItemView extends StatelessWidget {
             ClipRRect(
               borderRadius:const BorderRadius.only(topLeft: Radius.circular(8),topRight: Radius.circular(8)),
               child: Image.network(
-                content.thumbnailUrl ?? "",
+                content.contentData!.thumbnailUrl ?? "",
                 height: 140.0,
                 width: 140.0,
                 fit: BoxFit.cover,
@@ -59,20 +58,22 @@ class ContentItemView extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(content.creator ?? "",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          )),
-                      Text(content.isPaid! ? "PAID" : "FREE",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ))
-                    ],
+                  FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(content.creator ?? "",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            )),
+                        Text(content.isPaid! ? "PAID" : "FREE",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ))
+                      ],
+                    ),
                   )
                 ],
               ),

@@ -1,4 +1,6 @@
-class CategoryModel {
+import 'package:equatable/equatable.dart';
+
+class CategoryModel extends Equatable{
   CategoryModel({
     this.id,
     this.icon,
@@ -32,4 +34,7 @@ class CategoryModel {
         isActive: isActive ?? this.isActive,
         order: order ?? this.order,
       );
+
+  @override
+  List<Object?> get props => [id];
 }

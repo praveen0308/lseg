@@ -11,10 +11,10 @@ class GetHomeListing {
   Future<List<HomeListing>> fetchData() async {
     try {
       var banners = _configManager.fetchBanners();
-      var callTrendingContents = _contentRepositoryImpl.getTrendingContents();
-      var callPopularContents = _contentRepositoryImpl.getPopularContents();
+      var callTrendingContents = _contentRepositoryImpl.getTrendingContents(limit: 5);
+      var callPopularContents = _contentRepositoryImpl.getPopularContents(limit: 5);
       var callRecommendedCategories = _categoryRepositoryImpl
-          .getRecommendedCategories();
+          .getRecommendedCategories(limit: 5);
       var results = await Future.wait([
         callTrendingContents,
         callPopularContents,
@@ -25,20 +25,36 @@ class GetHomeListing {
         switch (index) {
           case 0:
             {
-              listing.add(TrendingContents(
-                  "Trending Contents", results[0] as List<ContentModel>));
+              var trendingContents = results[0] as List<ContentModel>;
+
+              if(trendingContents.isNotEmpty){
+                listing.add(TrendingContents(
+                    "Trending Contents", trendingContents));
+              }
+
             }
             break;
           case 1:
             {
-              listing.add(PopularContents(
-                  "Popular Contents", results[1] as List<ContentModel>));
+              var data = results[1] as List<ContentModel>;
+
+              if(data.isNotEmpty){
+                listing.add(PopularContents(
+                    "Popular Contents", data));
+              }
+
+
             }
             break;
           case 2:
             {
-              listing.add(RecommendCategories(
-                  "Recommended Categories", results[2] as List<CategoryModel>));
+              var data = results[2] as List<CategoryModel>;
+
+              if(data.isNotEmpty){
+                listing.add(RecommendCategories(
+                    "Recommended Categories", data));
+              }
+
             }
             break;
         }

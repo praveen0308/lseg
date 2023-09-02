@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lseg/domain/domain.dart';
+import 'package:lseg/ui/screens/core/base_page.dart';
 import 'package:lseg/ui/screens/core/base_screen.dart';
 import 'package:lseg/ui/widgets/view_base_listing.dart';
 import 'package:lseg/ui/widgets/view_category.dart';
@@ -31,7 +32,7 @@ class BaseListingScreen extends StatefulWidget
   }
 }
 
-class _BaseListingScreenState extends State<BaseListingScreen> {
+class _BaseListingScreenState extends State<BaseListingScreen> with BasePageState{
 
   @override
   void initState() {
@@ -42,19 +43,21 @@ class _BaseListingScreenState extends State<BaseListingScreen> {
   Widget build(BuildContext context) {
     return BaseScreen(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
            Text(
             widget.title,
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
           ),
-          BlocConsumer(
+          vGap(),
+          BlocConsumer<BaseListingScreenCubit,BaseListingScreenState>(
               builder: (context, state) {
                 if (state is LoadingListing) {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (state is ReceivedContentListing) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
                     child: ScrollConfiguration(
                       behavior: NoGlowBehaviour(),
                       child: GridView.builder(
@@ -62,8 +65,8 @@ class _BaseListingScreenState extends State<BaseListingScreen> {
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                childAspectRatio: 0.689,
-                                crossAxisSpacing: 16),
+                                childAspectRatio: 0.68,
+                                crossAxisSpacing: 8,mainAxisSpacing: 8),
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemCount: state.items.length,

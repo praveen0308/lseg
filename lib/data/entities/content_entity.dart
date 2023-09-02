@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:lseg/data/entities/content_data_entity.dart';
 import 'package:lseg/data/entities/review_entity.dart';
 /// title : "Course 110"
 /// subtitle : "Course 110"
@@ -39,10 +40,8 @@ class ContentEntity {
       String? creatorUsername, 
       String? description, 
       bool? isPaid, 
-      num? price, 
-      String? contentUrl, 
-      String? audioUrl, 
-      String? thumbnailUrl, 
+      num? price,
+      ContentDataEntity? contentData,
       List<ReviewEntity>? reviews,
       num? addedOn, 
       num? updatedOn, 
@@ -62,9 +61,7 @@ class ContentEntity {
     _description = description;
     _isPaid = isPaid;
     _price = price;
-    _contentUrl = contentUrl;
-    _audioUrl = audioUrl;
-    _thumbnailUrl = thumbnailUrl;
+    _contentData = contentData;
     _reviews = reviews;
     _addedOn = addedOn;
     _updatedOn = updatedOn;
@@ -87,15 +84,16 @@ class ContentEntity {
     _description = json['description'];
     _isPaid = json['is_paid'];
     _price = json['price'];
-    _contentUrl = json['content_url'];
-    _audioUrl = json['audio_url'];
-    _thumbnailUrl = json['thumbnail_url'];
-    /*if (json['reviews'] != null) {
-      _reviews = [];
-      json['reviews'].forEach((v) {
-        _reviews?.add(ReviewEntity.fromJson(v));
-      });
-    }*/
+    _contentData = ContentDataEntity.fromJson(json['content_data']);
+    if(json.data().toString().contains("review")){
+      if (json['reviews'] != null) {
+        _reviews = [];
+        json['reviews'].forEach((v) {
+          _reviews?.add(ReviewEntity.fromJson(v));
+        });
+      }
+    }
+
     _addedOn = json['added_on'];
     _updatedOn = json['updated_on'];
     _purchaseCount = json['purchase_count'];
@@ -115,9 +113,7 @@ class ContentEntity {
   String? _description;
   bool? _isPaid;
   num? _price;
-  String? _contentUrl;
-  String? _audioUrl;
-  String? _thumbnailUrl;
+  ContentDataEntity? _contentData;
   List<ReviewEntity>? _reviews;
   num? _addedOn;
   num? _updatedOn;
@@ -137,9 +133,7 @@ ContentEntity copyWith({  String? title,
   String? description,
   bool? isPaid,
   num? price,
-  String? contentUrl,
-  String? audioUrl,
-  String? thumbnailUrl,
+  ContentDataEntity? contentData,
   List<ReviewEntity>? reviews,
   num? addedOn,
   num? updatedOn,
@@ -159,9 +153,7 @@ ContentEntity copyWith({  String? title,
   description: description ?? _description,
   isPaid: isPaid ?? _isPaid,
   price: price ?? _price,
-  contentUrl: contentUrl ?? _contentUrl,
-  audioUrl: audioUrl ?? _audioUrl,
-  thumbnailUrl: thumbnailUrl ?? _thumbnailUrl,
+  contentData: contentData ?? _contentData,
   reviews: reviews ?? _reviews,
   addedOn: addedOn ?? _addedOn,
   updatedOn: updatedOn ?? _updatedOn,
@@ -182,9 +174,7 @@ ContentEntity copyWith({  String? title,
   String? get description => _description;
   bool? get isPaid => _isPaid;
   num? get price => _price;
-  String? get contentUrl => _contentUrl;
-  String? get audioUrl => _audioUrl;
-  String? get thumbnailUrl => _thumbnailUrl;
+  ContentDataEntity? get contentData => _contentData;
   List<ReviewEntity>? get reviews => _reviews;
   num? get addedOn => _addedOn;
   num? get updatedOn => _updatedOn;
@@ -207,12 +197,13 @@ ContentEntity copyWith({  String? title,
     map['description'] = _description;
     map['is_paid'] = _isPaid;
     map['price'] = _price;
-    map['content_url'] = _contentUrl;
-    map['audio_url'] = _audioUrl;
-    map['thumbnail_url'] = _thumbnailUrl;
-    /*if (_reviews != null) {
+    if(_contentData!=null){
+      map['content_data'] = _contentData!.toJson();
+    }
+
+    if (_reviews != null) {
       map['reviews'] = _reviews?.map((v) => v.toJson()).toList();
-    }*/
+    }
     map['added_on'] = _addedOn;
     map['updated_on'] = _updatedOn;
     map['purchase_count'] = _purchaseCount;

@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:lseg/domain/models/content_data_model.dart';
 import 'package:lseg/domain/models/review_model.dart';
 
 class ContentModel {
@@ -15,9 +16,7 @@ class ContentModel {
     this.description,
     this.isPaid,
     this.price,
-    this.contentUrl,
-    this.audioUrl,
-    this.thumbnailUrl,
+    this.contentData,
     this.reviews,
     this.addedOn,
     this.updatedOn,
@@ -42,9 +41,7 @@ class ContentModel {
   String? description;
   bool? isPaid;
   num? price;
-  String? contentUrl;
-  String? audioUrl;
-  String? thumbnailUrl;
+  ContentDataModel? contentData;
   List<ReviewModel>? reviews;
   num? addedOn;
   num? updatedOn;
@@ -69,9 +66,7 @@ class ContentModel {
     String? description,
     bool? isPaid,
     num? price,
-    String? contentUrl,
-    String? audioUrl,
-    String? thumbnailUrl,
+    ContentDataModel? contentData,
     List<ReviewModel>? reviews,
     num? addedOn,
     num? updatedOn,
@@ -96,9 +91,7 @@ class ContentModel {
         description: description ?? this.description,
         isPaid: isPaid ?? this.isPaid,
         price: price ?? this.price,
-        contentUrl: contentUrl ?? this.contentUrl,
-        audioUrl: audioUrl ?? this.audioUrl,
-        thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+        contentData: contentData ?? this.contentData,
         reviews: reviews ?? this.reviews,
         addedOn: addedOn ?? this.addedOn,
         updatedOn: updatedOn ?? this.updatedOn,

@@ -21,7 +21,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> with BasePageState {
-  File? profileImage;
+  String? profileImage;
   String name = "";
   String userName = "";
 
@@ -37,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> with BasePageState {
       listener: (context, state) {
         if (state is ProfileDataLoaded) {
           setState(() {
-            profileImage = File(state.profileUrl);
+            profileImage = state.profileUrl;
             name = state.name;
             userName = state.userName;
           });
@@ -68,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> with BasePageState {
                       child: profileImage != null
                           ? CircleAvatar(
                               radius: 50,
-                              backgroundImage: FileImage(profileImage!),
+                              backgroundImage: NetworkImage(profileImage!),
                             )
                           : const CircleAvatar(
                               radius: 50,
@@ -110,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> with BasePageState {
                   MenuItemView(
                     title: AppStrings.purchasedContent,
                     onClick: () {
-                      AutoRouter.of(context).push(const MyContentRoute());
+                      AutoRouter.of(context).push(const PurchasedContentRoute());
                     },
                   ),
                   MenuItemView(
@@ -143,8 +143,8 @@ class _ProfilePageState extends State<ProfilePage> with BasePageState {
                       style: const TextStyle(color: Colors.black),
                       children: [
                     TextSpan(
-                        text: "Terms",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        text: "Terms & Conditions",
+                        style: const TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline,),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             AutoRouter.of(context).push(TermsNConditionsRoute());
@@ -152,12 +152,13 @@ class _ProfilePageState extends State<ProfilePage> with BasePageState {
                     const TextSpan(text: " and "),
                     TextSpan(
                         text: "Privacy Policy",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline,),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             AutoRouter.of(context).push(PrivacyPolicyRoute());
                           }),
-                  ]))
+                  ])),
+              vGap()
             ],
           ),
         ),

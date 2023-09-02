@@ -39,7 +39,7 @@ class MainToolbar extends StatelessWidget {
         children: [
           GestureDetector(
               onTap: onPrimaryActionClick,
-              child: Image.asset(AppImages.icLogo)),
+              child: Image.asset(AppImages.icLogo2,width: 80,height: 40,)),
           Text(
             controller != null ? (controller?.title ?? "") : title,
             style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),

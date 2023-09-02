@@ -1,15 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lseg/ui/screens/core/base_screen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'content_viewer_screen_cubit.dart';
 
 class ContentViewerScreenArgs{
   final String pdfUrl;
   final String audioUrl;
+  final bool isPaid;
 
-  ContentViewerScreenArgs(this.pdfUrl, this.audioUrl);
+  ContentViewerScreenArgs(this.pdfUrl, this.audioUrl, this.isPaid);
 }
 @RoutePage()
 class ContentViewerScreen extends StatefulWidget implements AutoRouteWrapper{
@@ -26,13 +26,15 @@ class ContentViewerScreen extends StatefulWidget implements AutoRouteWrapper{
 }
 
 class _ContentViewerScreenState extends State<ContentViewerScreen> {
-  final _controller = PdfViewerController();
+  late PdfViewerController _pdfViewerController;
+  int _pageCount=0;
 
   @override
-  void initState() {
-
+  initState(){
+    _pdfViewerController = PdfViewerController();
     super.initState();
   }
+
 
   Future<void> _showMyDialog() async {
     return showDialog<bool>(
@@ -84,9 +86,13 @@ class _ContentViewerScreenState extends State<ContentViewerScreen> {
         widget.args.pdfUrl,
           enableTextSelection: false,
           interactionMode: PdfInteractionMode.pan,
-        controller: _controller,
+        controller: _pdfViewerController,
+        onDocumentLoaded: (PdfDocumentLoadedDetails details){
+          _pageCount = _pdfViewerController.pageCount;
+        },
         onPageChanged: (PdfPageChangedDetails details) {
-          if(details.newPageNumber>5){
+
+          if(widget.args.isPaid && details.newPageNumber>(0.2*_pageCount)){
             _showMyDialog();
           }
         },

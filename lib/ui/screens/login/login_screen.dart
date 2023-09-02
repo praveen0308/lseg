@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lseg/domain/domain.dart';
@@ -29,6 +30,13 @@ class LoginScreen extends StatefulWidget implements AutoRouteWrapper {
 
 class _LoginScreenState extends State<LoginScreen> with BasePageState {
   var tncAccepted = false;
+
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +71,11 @@ class _LoginScreenState extends State<LoginScreen> with BasePageState {
               children: [
                 Expanded(
                     child: Image.asset(
-                  AppImages.imgLogo,
+                      AppImages.icLogo2,
                   scale: 0.5,
                 )),
                 LoginButton(onClick: () {
                   if (tncAccepted) {
-
                     BlocProvider.of<LoginScreenCubit>(context).login();
                   } else {
                     showToast("Please accept terms and conditions!!!",
@@ -89,21 +96,27 @@ class _LoginScreenState extends State<LoginScreen> with BasePageState {
                           children: [
                         const TextSpan(text: "I agree with "),
                         TextSpan(
-                            text: "Terms",
-                            style:
-                                GoogleFonts.dmSans(fontWeight: FontWeight.w500),
+                            text: "Terms & Conditions",
+                            style: GoogleFonts.dmSans(
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.underline,
+                            ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                AutoRouter.of(context).push(TermsNConditionsRoute());
+                                AutoRouter.of(context)
+                                    .push(TermsNConditionsRoute());
                               }),
                         const TextSpan(text: " and "),
                         TextSpan(
                             text: "Privacy",
-                            style:
-                                GoogleFonts.dmSans(fontWeight: FontWeight.w500),
+                            style: GoogleFonts.dmSans(
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.underline,
+                            ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                AutoRouter.of(context).push(PrivacyPolicyRoute());
+                                AutoRouter.of(context)
+                                    .push(PrivacyPolicyRoute());
                               }),
                       ])),
                 )

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lseg/data/data.dart';
@@ -38,6 +39,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     AppStrings.leaderBoard,
     AppStrings.profile
   ];
+
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -58,7 +58,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
           ),
           vGap(),
-          TextInputFieldView(label: "Search", textEditingController: _searchController),
+          TextInputFieldView(label: "Search", textEditingController: _searchController,placeHolder: "Search here...",),
           vGap(),
           BlocConsumer<CategoriesScreenCubit, CategoriesScreenState>(
             listener: (context, state) {},

@@ -11,6 +11,8 @@ abstract class UserService {
 
   Future<void> updateFavourites(String userId, List<String> favourites);
 
-  Future<UserEntity> getCreatorDetails(
+  Future<UserEntity> getUserDetails(
       String userId);
+
+  Future<num> getUserWalletBalance(String userId);
 }

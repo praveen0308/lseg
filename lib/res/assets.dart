@@ -16,6 +16,7 @@ class AppImages {
   static const String icLightBulb = "$_rootImagePath/ic_light_bulb.svg";
   static const String icLinkedIn = "$_rootImagePath/ic_linkedin.svg";
   static const String icLogo = "$_rootImagePath/ic_logo.png";
+  static const String icLogo2 = "$_rootImagePath/ic_learn_n_earn_logo.png";
   static const String icPhone = "$_rootImagePath/ic_phone.svg";
   static const String icRupee = "$_rootImagePath/ic_rupee.svg";
   static const String icRupeeCircle = "$_rootImagePath/ic_rupee_circle.svg";
@@ -32,6 +33,7 @@ class AppImages {
   static const String imgLogo = "$_rootImagePath/img_logo.png";
   static const String imgShare = "$_rootImagePath/img_share.png";
   static const String imgSplash = "$_rootImagePath/img_splash.png";
+  static const String imgSplash2 = "$_rootImagePath/img_splash_2.png";
   static const String imgSuccess = "$_rootImagePath/img_success.png";
   static const String icAdd = '$_rootImagePath/ic_add.svg';
   static const String imgLoading = '$_rootImagePath/img_loading.png';

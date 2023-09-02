@@ -12,10 +12,16 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScreen(
-      body: HtmlWidget(
-        data,
-        textStyle: const TextStyle(fontSize: 14),
+    return Scaffold(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: HtmlWidget(
+            data,
+            textStyle: const TextStyle(fontSize: 14),
+          ),
+        ),
       ),
     );
   }

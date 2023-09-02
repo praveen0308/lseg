@@ -16,6 +16,7 @@ class Assets {
   static const String assetsIcHome = 'assets/ic_home.svg';
   static const String assetsIcHomeFilled = 'assets/ic_home_filled.svg';
   static const String assetsIcInstagram = 'assets/ic_instagram.svg';
+  static const String assetsIcLearnNEarnLogo = 'assets/ic_learn_n_earn_logo.png';
   static const String assetsIcLightBulb = 'assets/ic_light_bulb.svg';
   static const String assetsIcLightBulbFilled = 'assets/ic_light_bulb_filled.svg';
   static const String assetsIcLinkedin = 'assets/ic_linkedin.svg';
@@ -43,9 +44,15 @@ class Assets {
   static const String assetsImgLogo1192 = 'assets/img_logo_1192.png';
   static const String assetsImgShare = 'assets/img_share.png';
   static const String assetsImgSplash = 'assets/img_splash.png';
+  static const String assetsImgSplash2 = 'assets/img_splash_2.png';
   static const String assetsImgSuccess = 'assets/img_success.svg';
   static const String lsegAssetsIcFirstWinner = 'assets/ic_first_winner.svg';
   static const String lsegAssetsIcSecondWinner = 'assets/ic_second_winner.svg';
   static const String lsegAssetsIcThirdWinner = 'assets/ic_third_winner.svg';
+  static const String lsegAssetsImgEarn = 'assets/img_earn.svg';
+  static const String lsegAssetsImgGrowth = 'assets/img_growth.svg';
+  static const String lsegAssetsImgLearn = 'assets/img_learn.svg';
+  static const String lsegAssetsImgShare = 'assets/img_share.svg';
+  static const String rawUniversities = 'raw/universities.xlsx';
 
 }

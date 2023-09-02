@@ -3,30 +3,41 @@ part of 'edit_profile_screen_cubit.dart';
 @immutable
 abstract class EditProfileScreenState {}
 
-class EditProfileScreenInitial extends EditProfileScreenState {}
-class ReceivedProfileCache extends EditProfileScreenState {
-  final UserModel user;
+class LoadingProfile extends EditProfileScreenState {}
+class NoUserData extends EditProfileScreenState {}
 
-  ReceivedProfileCache(this.user);
+class ProfileLoaded extends EditProfileScreenState {
+  final UserModel data;
+  final int activePage;
+  final SubmissionStatus status;
+
+  ProfileLoaded({
+    required this.data,
+    required this.activePage,
+    required this.status,
+  });
+
+  @override
+  String toString() {
+    return 'ProfileLoaded{ data: $data, activePage: $activePage, status: $status,}';
+  }
+
+  ProfileLoaded copyWith({
+    UserModel? data,
+    int? activePage,
+    SubmissionStatus? status,
+  }) {
+    return ProfileLoaded(
+      data: data ?? this.data,
+      activePage: activePage ?? this.activePage,
+      status: status ?? this.status,
+    );
+  }
 }
 
-class ValidatePersonalInfo extends EditProfileScreenState {}
-class SubmittingPersonalInfo extends EditProfileScreenState {}
-class PersonalInfoSubmitted extends EditProfileScreenState {}
-
-class ValidateOtherInfo extends EditProfileScreenState {}
-class SubmittingOtherInfo extends EditProfileScreenState {}
-class OtherInfoSubmitted extends EditProfileScreenState {}
-
-class ValidateContactInfo extends EditProfileScreenState {}
-class SubmittingContactInfo extends EditProfileScreenState {}
-class ContactInfoSubmitted extends EditProfileScreenState {}
-
-class EditProfileDone extends EditProfileScreenState {}
-class EditProfileFailed extends EditProfileScreenState {
-  final String msg;
-
-  EditProfileFailed(this.msg);
-
+enum SubmissionStatus {
+  idle,
+  inProgress,
+  success,
+  error,
 }
-

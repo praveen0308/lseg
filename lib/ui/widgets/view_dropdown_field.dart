@@ -16,7 +16,7 @@ class DropdownFieldViewController<T> {
   }
 }
 
-class DropdownFieldView<T> extends StatelessWidget {
+class DropdownFieldView<T> extends StatefulWidget {
   final String? label;
   final String? hint;
   final Function(T?)? onChanged;
@@ -35,21 +35,28 @@ class DropdownFieldView<T> extends StatelessWidget {
   });
 
   @override
+  State<DropdownFieldView<T>> createState() => _DropdownFieldViewState<T>();
+}
+
+class _DropdownFieldViewState<T> extends State<DropdownFieldView<T>> {
+
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (label != null)
+        if (widget.label != null)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              label ?? "",
+              widget.label ?? "",
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
             ),
           ),
         DropdownButtonFormField2<T>(
           isExpanded: true,
-          value: controller.value,
+          value: widget.controller.value,
           decoration: InputDecoration(
             // Add Horizontal padding using menuItemStyleData.padding so it matches
             // the menu padding when button's width is not specified.
@@ -60,10 +67,10 @@ class DropdownFieldView<T> extends StatelessWidget {
             // Add more decoration..
           ),
           hint: Text(
-            hint ?? "",
+            widget.hint ?? "",
             style: const TextStyle(fontSize: 14),
           ),
-          items: controller.items
+          items: widget.controller.items
               ?.map((item) => DropdownMenuItem<T>(
                     value: item,
                     child: Text(
@@ -74,17 +81,17 @@ class DropdownFieldView<T> extends StatelessWidget {
                     ),
                   ))
               .toList(),
-          validator: validator,
+          validator: widget.validator,
           onChanged: (v) {
-            controller.value = v;
-            if (onChanged != null) {
-              onChanged!(v);
+            widget.controller.value = v;
+            if (widget.onChanged != null) {
+              widget.onChanged!(v);
             }
           },
           onSaved: (v) {
-            controller.value = v;
-            if (onSaved != null) {
-              onSaved!(v);
+            widget.controller.value = v;
+            if (widget.onSaved != null) {
+              widget.onSaved!(v);
             }
           },
           buttonStyleData: const ButtonStyleData(

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lseg/data/remote/firebase_data_source/config_manager.dart';
 import 'package:lseg/res/res.dart';
 import 'package:lseg/ui/screens/core/base_screen.dart';
+import 'package:lseg/utils/util_methods.dart';
 
 @RoutePage()
 class ContactUsScreen extends StatelessWidget {
@@ -14,6 +15,7 @@ class ContactUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
+      toolbarActionEnabled: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -34,31 +36,41 @@ class ContactUsScreen extends StatelessWidget {
                       Icons.call,
                       size: 32,
                     ),
-                    data.phone.toString()),
+                    data.phone.toString(),(){
+                      LauncherUtils.openPhone(data.phone.toString());
+                }),
                 getContactUsInfoRow(
                     const Icon(
                       Icons.email,
                       size: 32,
                     ),
-                    data.email.toString()),
+                    data.email.toString(),(){
+                  LauncherUtils.openEmail(data.email.toString(),"Email Subject","Body");
+                }),
                 getContactUsInfoRow(
                     SvgPicture.asset(AppImages.icTwitter,
                         height: 32, width: 32),
-                    data.twitter.toString()),
+                    data.twitter.toString(),(){
+                  LauncherUtils.openWebsite(data.twitter.toString());
+                }),
                 getContactUsInfoRow(
                     SvgPicture.asset(
                       AppImages.icInstagram,
                       height: 32,
                       width: 32,
                     ),
-                    data.instagram.toString()),
+                    data.instagram.toString(),(){
+                  LauncherUtils.openWebsite(data.instagram.toString());
+                }),
                 getContactUsInfoRow(
                     SvgPicture.asset(
                       AppImages.icLinkedIn,
                       height: 32,
                       width: 32,
                     ),
-                    data.linkedin.toString()),
+                    data.linkedin.toString(),(){
+                  LauncherUtils.openWebsite(data.linkedin.toString());
+                }),
               ],
             ),
           )
@@ -67,20 +79,25 @@ class ContactUsScreen extends StatelessWidget {
     );
   }
 
-  Widget getContactUsInfoRow(Widget icon, String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
-      child: Row(
-        children: [
-          icon,
-          const SizedBox(
-            width: 16,
-          ),
-          Text(
-            title,
-            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-          )
-        ],
+  Widget getContactUsInfoRow(Widget icon, String title,VoidCallback onClick) {
+    return GestureDetector(
+      onTap: onClick,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
+        child: Row(
+          children: [
+            icon,
+            const SizedBox(
+              width: 16,
+            ),
+            Flexible(
+              child: Text(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

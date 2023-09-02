@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:lseg/domain/models/on_boarding_model.dart';
+import 'package:lseg/generated/assets.dart';
 import 'package:lseg/local/local.dart';
 import 'package:lseg/res/res.dart';
 import 'package:meta/meta.dart';
@@ -10,13 +11,13 @@ class OnBoardingScreenCubit extends Cubit<OnBoardingScreenState> {
   final AppStorage _appStorage;
   OnBoardingScreenCubit(this._appStorage) : super(OnBoardingScreenInitial());
   final onBoardingItems = [
-    OnBoardingModel(AppImages.imgLearn, AppStrings.onBoardingTitle1,
+    OnBoardingModel(Assets.lsegAssetsImgLearn, AppStrings.onBoardingTitle1,
         AppStrings.onBoardingDescription1),
-    OnBoardingModel(AppImages.imgShare, AppStrings.onBoardingTitle2,
+    OnBoardingModel(Assets.lsegAssetsImgShare, AppStrings.onBoardingTitle2,
         AppStrings.onBoardingDescription2),
-    OnBoardingModel(AppImages.imgEarn, AppStrings.onBoardingTitle3,
+    OnBoardingModel(Assets.lsegAssetsImgEarn, AppStrings.onBoardingTitle3,
         AppStrings.onBoardingDescription3),
-    OnBoardingModel(AppImages.imgGrowth, AppStrings.onBoardingTitle4,
+    OnBoardingModel(Assets.lsegAssetsImgGrowth, AppStrings.onBoardingTitle4,
         AppStrings.onBoardingDescription4),
   ];
 

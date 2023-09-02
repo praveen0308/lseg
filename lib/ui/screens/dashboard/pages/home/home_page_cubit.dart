@@ -11,6 +11,7 @@ class HomePageCubit extends Cubit<HomePageState> with BaseCubit{
   HomePageCubit(this._getHomeListing) : super(HomePageInitial());
 
   Future<void> fetchHomeListing() async {
+    emit(LoadingData());
     try{
       var listing = await _getHomeListing.fetchData();
       if(listing.isNotEmpty){

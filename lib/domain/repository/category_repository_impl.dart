@@ -27,9 +27,9 @@ class CategoryRepositoryImpl extends CategoryRepository {
   }
 
   @override
-  Future<List<CategoryModel>> getRecommendedCategories() async {
+  Future<List<CategoryModel>> getRecommendedCategories({int limit = 10}) async {
     try {
-      var response = await _categoryService.getRecommendedCategories();
+      var response = await _categoryService.getRecommendedCategories(limit: limit);
       return response.map((e) => CategoryEntityMapper().toDomain(e)).toList();
     } on Exception catch (e) {
       print(e);

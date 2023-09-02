@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lseg/domain/domain.dart';
 import 'package:lseg/res/res.dart';
+import 'package:lseg/routes/routes.dart';
+import 'package:lseg/ui/screens/core/base_page.dart';
 import 'package:lseg/ui/screens/core/base_screen.dart';
 import 'package:lseg/ui/widgets/widgets.dart';
 import 'package:lseg/utils/no_glow_behaviour.dart';
@@ -18,14 +20,14 @@ class MyContentScreen extends StatefulWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider(create: (ctx) => MyContentScreenCubit(
-      RepositoryProvider.of<ContentRepositoryImpl>(context)
-    ), child: this);
+    return BlocProvider(
+        create: (ctx) => MyContentScreenCubit(
+            RepositoryProvider.of<ContentRepositoryImpl>(context)),
+        child: this);
   }
 }
 
-class _MyContentScreenState extends State<MyContentScreen> {
-
+class _MyContentScreenState extends State<MyContentScreen> with BasePageState{
   @override
   void initState() {
     BlocProvider.of<MyContentScreenCubit>(context).loadContents();
@@ -45,7 +47,8 @@ class _MyContentScreenState extends State<MyContentScreen> {
           ),
           BlocConsumer<MyContentScreenCubit, MyContentScreenState>(
             listener: (context, state) {
-              // TODO: implement listener
+              showLoading(state is DeletingContent);
+
             },
             builder: (context, state) {
               if (state is LoadingContents) {
@@ -54,37 +57,92 @@ class _MyContentScreenState extends State<MyContentScreen> {
                 );
               }
               if (state is NoContents) {
-                return const Column(
-                  children: [
-                    Icon(Icons.folder_copy_outlined),
-                    Text("No Data Found!!!")
-                  ],
+                return const Expanded(
+                  child:  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.folder_copy_outlined,size: 50,),
+                      Text("No Data Found!!!")
+                    ],
+                  ),
                 );
               }
-              if(state is ReceivedContents){
+              if (state is ReceivedContents) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 8),
                   child: ScrollConfiguration(
                     behavior: NoGlowBehaviour(),
                     child: GridView.builder(
-
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.689,
-                          crossAxisSpacing: 16),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.5,
+                              crossAxisSpacing: 8),
                       shrinkWrap: true,
-
                       scrollDirection: Axis.vertical,
                       itemCount: state.contents.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return ContentItemView(content: state.contents[index],);
+                        return Column(
+                          children: [
+                            ContentItemView(
+                              content: state.contents[index],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        context.read<MyContentScreenCubit>().deleteContent(state.contents[index].contentId!);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        child: const Icon(
+                                          Icons.delete,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: (){
+                                        // context.read<MyContentScreenCubit>().deleteContent(state.contents[index].contentId!);
+                                        AutoRouter.of(context).push(EditContentRoute(content: state.contents[index]));
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        child: const Icon(
+                                          Icons.edit,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        );
                       },
                     ),
                   ),
                 );
               }
               return Container();
-
             },
           )
         ],

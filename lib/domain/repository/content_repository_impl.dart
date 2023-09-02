@@ -116,21 +116,6 @@ class ContentRepositoryImpl extends ContentRepository {
     }
   }
 
-  @override
-  Future<List<ContentModel>> getPopularContents() async {
-    try {
-      var response = await _contentService.getPopularContents();
-      if (response != null) {
-        var mapper = await getContentEntityMapper();
-        return response.map((e) => mapper.toDomain(e)).toList();
-      } else {
-        return List.empty();
-      }
-    } on Exception catch (e) {
-      print(e);
-      return List.empty();
-    }
-  }
 
   @override
   Future<List<ContentModel>> getRecommendedContent(String userId) async {
@@ -150,10 +135,10 @@ class ContentRepositoryImpl extends ContentRepository {
 
   @override
   Future<List<ContentModel>> getRecommendedContentOfCategory(
-      String categoryId) async {
+      String categoryId,{int limit = 10}) async {
     try {
       var response =
-          await _contentService.getRecommendedContentOfCategory(categoryId);
+          await _contentService.getRecommendedContentOfCategory(categoryId,limit: limit);
       if (response != null) {
         var mapper = await getContentEntityMapper();
         return response.map((e) => mapper.toDomain(e)).toList();
@@ -167,9 +152,25 @@ class ContentRepositoryImpl extends ContentRepository {
   }
 
   @override
-  Future<List<ContentModel>> getTrendingContents() async {
+  Future<List<ContentModel>> getTrendingContents({int limit = 10}) async {
     try {
-      var response = await _contentService.getTrendingContents();
+      var response = await _contentService.getTrendingContents(limit: limit);
+      if (response != null) {
+        var mapper = await getContentEntityMapper();
+        return response.map((e) => mapper.toDomain(e)).toList();
+      } else {
+        return List.empty();
+      }
+    } on Exception catch (e) {
+      print(e);
+      return List.empty();
+    }
+  }
+
+  @override
+  Future<List<ContentModel>> getPopularContents({int limit = 10}) async {
+    try {
+      var response = await _contentService.getPopularContents(limit: limit);
       if (response != null) {
         var mapper = await getContentEntityMapper();
         return response.map((e) => mapper.toDomain(e)).toList();
@@ -185,7 +186,7 @@ class ContentRepositoryImpl extends ContentRepository {
   @override
   Future<void> updateContentDetails(ContentModel contentModel) async {
     try {
-      await _contentService.uploadNewContent(
+      await _contentService.updateContentDetails(
           ContentEntityMapper(_appStorage).fromDomain(contentModel));
     } catch (e) {
       throw Future.error(e);
@@ -205,11 +206,11 @@ class ContentRepositoryImpl extends ContentRepository {
       contentModel.purchaseCount = 0;
       contentModel.watchTime = 0;
       contentModel.isActive = true;
-
-      var response = await _contentService.uploadNewContent(
-          ContentEntityMapper(_appStorage).fromDomain(contentModel));
       var mapper = ContentEntityMapper(_appStorage);
       await mapper.initMapper();
+      var response = await _contentService.uploadNewContent(
+          mapper.fromDomain(contentModel));
+
       return mapper.toDomain(response);
     } catch (e) {
       throw Future.error(e);
@@ -232,7 +233,7 @@ class ContentRepositoryImpl extends ContentRepository {
       review.userId = await _appStorage.getUserID();
       review.name = await _appStorage.getName();
       review.ratedOn = DateTime.now().millisecondsSinceEpoch;
-      return await _contentService.updateContentReview(contentId,ReviewEntityMapper().fromDomain(review));
+      await _contentService.updateContentReview(contentId,ReviewEntityMapper().fromDomain(review));
     } catch (e) {
       throw Future.error(e);
     }

@@ -5,30 +5,35 @@ import 'package:lseg/res/res.dart';
 class DateTextFieldViewController {
   DateTime? value;
 
+
+  DateTextFieldViewController({this.value});
+
   void setDate(DateTime? value) {
     this.value = value;
   }
 }
 
-class DateTextFieldView extends StatelessWidget {
+class DateTextFieldView extends StatefulWidget {
   final String label;
   final bool isRequired;
   final Function(DateTime dateTime) onDateSelected;
   final String? Function(String? val)? validator;
   final DateTextFieldViewController? controller;
-  late DateTime selectedDate;
 
-  DateTextFieldView(
+  const DateTextFieldView(
       {super.key,
       required this.label,
       required this.isRequired,
       required this.onDateSelected,
       required this.validator,
-      this.controller}) {
-    selectedDate =
-        controller?.value == null ? DateTime(2008) : controller!.value!;
-  }
+      this.controller});
 
+  @override
+  State<DateTextFieldView> createState() => _DateTextFieldViewState();
+}
+
+class _DateTextFieldViewState extends State<DateTextFieldView> {
+  late DateTime selectedDate;
   final dateTextController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
@@ -40,8 +45,18 @@ class DateTextFieldView extends StatelessWidget {
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
       dateTextController.text = DateFormat("dd MMM yyyy").format(selectedDate);
-      onDateSelected(selectedDate);
+      widget.onDateSelected(selectedDate);
     }
+  }
+
+  @override
+  void initState() {
+    selectedDate = widget.controller?.value == null
+        ? DateTime(2008)
+        : widget.controller!.value!;
+    dateTextController.text = DateFormat("dd MMM yyyy").format(selectedDate);
+    widget.onDateSelected(selectedDate);
+    super.initState();
   }
 
   @override
@@ -52,7 +67,7 @@ class DateTextFieldView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Text(
-            label,
+            widget.label,
             style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 15,
@@ -76,10 +91,10 @@ class DateTextFieldView extends StatelessWidget {
                         const BorderSide(width: 2, color: AppColors.primary),
                     borderRadius: BorderRadius.circular(5),
                   )),
-              validator: validator,
+              validator: widget.validator,
             ),
             Positioned(
-                right: 0,
+                right: 8,
                 top: 0,
                 bottom: 0,
                 child: GestureDetector(

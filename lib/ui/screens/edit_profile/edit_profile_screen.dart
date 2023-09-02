@@ -33,102 +33,45 @@ class EditProfileScreen extends StatefulWidget implements AutoRouteWrapper {
 
 class _EditProfileScreenState extends State<EditProfileScreen>
     with BasePageState {
-  final _pageController = PageController();
-@override
-  void initState() {
-    BlocProvider.of<EditProfileScreenCubit>(context).initEditProfileData();
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
         applyScroll: false,
         enableAppBar: false,
-        body: BlocListener<EditProfileScreenCubit, EditProfileScreenState>(
-          listener: (context, state) {
-            showLoading(state is SubmittingPersonalInfo ||
-                state is SubmittingOtherInfo ||
-                state is SubmittingContactInfo);
-            if (state is PersonalInfoSubmitted) {
-              _pageController.jumpToPage(1);
-            }
-            if (state is OtherInfoSubmitted) {
-              _pageController.jumpToPage(2);
-            }
-            if (state is EditProfileDone) {
-              showToast("Profile updated successfully!!", ToastType.success);
-              AutoRouter.of(context).pop();
-            }
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child: PageView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: _pageController,
-                  children: [
-                    BlocProvider.value(
-                      value: context.read<EditProfileScreenCubit>(),
-                      child: const PersonalInfoPage(),
-                    ),
-                    BlocProvider.value(
-                      value: context.read<EditProfileScreenCubit>(),
-                      child: const OtherInfoPage(),
-                    ),
-                    BlocProvider.value(
-                      value: context.read<EditProfileScreenCubit>(),
-                      child: const ContactInfoPage(),
-                    ),
-                  ],
-                ),
-              ),
-              BlocBuilder<EditProfileScreenCubit, EditProfileScreenState>(
-                builder: (context, state) {
-                  return Column(
-                    children: [
-                      IndicatorView(
-                          length: 3,
-                          activeIndex:
-                              BlocProvider.of<EditProfileScreenCubit>(context)
-                                  .activeStep),
-                      if (BlocProvider.of<EditProfileScreenCubit>(context)
-                          .showNext)
-                        ElevatedButton(
-                            onPressed: () {
-                              if(_pageController.page?.toInt() == 0){
-                                BlocProvider.of<EditProfileScreenCubit>(context)
-                                    .validatePersonalInfo();
-                              }else{
-                                BlocProvider.of<EditProfileScreenCubit>(context)
-                                    .validateOtherInfo();
-                              }
+        pagePadding: const EdgeInsets.only(left: 16,top: 8,right: 16,bottom: 0),
+        body: BlocConsumer<EditProfileScreenCubit, EditProfileScreenState>(
+            listener: (context, state) {
+              if(state is ProfileLoaded){
+                showLoading(state.status == SubmissionStatus.inProgress);
 
-                            },
-                            child: const Text(AppStrings.next)),
-                      if (BlocProvider.of<EditProfileScreenCubit>(context)
-                          .showSubmit)
-                        ElevatedButton(
-                            onPressed: () {
-                              BlocProvider.of<EditProfileScreenCubit>(context)
-                                  .validateContactInfo();
-                            },
-                            child: const Text(AppStrings.submit)),
-                      vGap(),
-                      if (BlocProvider.of<EditProfileScreenCubit>(context)
-                          .showBack)
-                        OutlinedButton(
-                            onPressed: () {
-                              BlocProvider.of<EditProfileScreenCubit>(context)
-                                  .backNavigate();
-                            },
-                            child: const Text(AppStrings.back))
-                    ],
-                  );
-                },
-              )
-            ],
-          ),
-        ));
+                if(state.status == SubmissionStatus.success){
+                  showToast("Profile Updated Successfully!!!", ToastType.success);
+                  AutoRouter.of(context).pop();
+                }
+              }
+            },
+            builder: (context, state) {
+              return state is LoadingProfile
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : state is ProfileLoaded
+                      ? Builder(builder: (context) {
+                          if (state.activePage == 0) {
+                            return  PersonalInfoPage(data: state.data,);
+                          } else if (state.activePage == 1) {
+                            return OtherInfoPage(data: state.data,);
+                          } else {
+                            return ContactInfoPage(data: state.data,);
+                          }
+                        })
+                      : const Column(
+                          children: [
+                            Icon(Icons.error),
+                            Text("Something went wrong!!!")
+                          ],
+                        );
+            },
+            ));
   }
 }

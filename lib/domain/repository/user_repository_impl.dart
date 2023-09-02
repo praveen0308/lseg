@@ -22,8 +22,9 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<UserModel?> fetchUserData() async {
     try {
-      var userData = await _appStorage.getUserData();
-      return UserEntityMapper().toDomain(userData);
+      var userId = await _appStorage.getUserID();
+      var rUser = await _userService.getUserDetails(userId);
+      return UserEntityMapper().toDomain(rUser);
     } on Exception catch (e) {
       print(e);
       return null;
@@ -77,7 +78,7 @@ class UserRepositoryImpl extends UserRepository {
   Future<Pair<UserModel, List<ContentModel>>?> fetchCreatorProfile(
       String creatorId) async {
     try {
-      var rUser = await _userService.getCreatorDetails(creatorId);
+      var rUser = await _userService.getUserDetails(creatorId);
       var rContents = await _contentService.getContentByCreator(creatorId);
       if (rContents != null) {
         var mapper = await getContentEntityMapper();
@@ -92,5 +93,20 @@ class UserRepositoryImpl extends UserRepository {
       }
       return null;
     }
+  }
+
+  @override
+  Future<num?> fetchWalletBalance({String? userId}) async{
+    try {
+      var cUserId = await _appStorage.getUserID();
+      userId ??= cUserId;
+      var response = await _userService.getUserWalletBalance(userId);
+      return response;
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    return null;
   }
 }

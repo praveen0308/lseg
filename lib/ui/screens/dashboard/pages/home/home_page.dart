@@ -24,13 +24,13 @@ class _HomePageState extends State<HomePage> with BasePageState {
   @override
   void initState() {
     BlocProvider.of<HomePageCubit>(context).fetchHomeListing();
-    AppConstants.universities();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomePageCubit, HomePageState>(
       listener: (context, state) {
+        showLoading(state is LoadingData);
         if (state is HomeListingFailed) {
           showToast(state.msg, ToastType.error);
         }

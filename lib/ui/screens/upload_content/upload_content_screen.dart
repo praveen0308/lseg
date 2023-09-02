@@ -42,6 +42,7 @@ class _UploadContentScreenState extends State<UploadContentScreen>
   Widget build(BuildContext context) {
     return BaseScreen(
       applyScroll: false,
+      toolbarActionEnabled: false,
       pagePadding: const EdgeInsets.symmetric(horizontal: 16),
       body: BlocConsumer<UploadContentScreenCubit, UploadContentScreenState>(
         listener: (context, state) {

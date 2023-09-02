@@ -7,4 +7,6 @@ abstract class UserRepository{
   Future<void> addIntoFavourites(String contentId);
   Future<void> removeFromFavourites(String contentId);
   Future<Pair<UserModel, List<ContentModel>>?> fetchCreatorProfile(String creatorId);
+  Future<num?> fetchWalletBalance({String? userId});
+
 }

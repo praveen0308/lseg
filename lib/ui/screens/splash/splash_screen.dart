@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lseg/local/app_login_state.dart';
 import 'package:lseg/res/res.dart';
 import 'package:lseg/routes/routes.dart';
@@ -18,6 +19,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with BasePageState {
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     super.initState();
     Timer(const Duration(seconds: AppConstants.splashScreenPauseTime), () {
       // AutoRouter.of(context).replace(const OnBoardingRoute());
@@ -49,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> with BasePageState {
         body: Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(AppImages.imgSplash),
+          image: AssetImage(AppImages.imgSplash2),
           fit: BoxFit.cover,
         ),
       ),

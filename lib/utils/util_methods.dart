@@ -140,7 +140,7 @@ class LauncherUtils {
       await launchUrl(uri);
 
     } else {
-      throw 'Could not open the email.';
+      throw 'Could not open the website.';
     }
   }
 

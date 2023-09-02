@@ -15,7 +15,7 @@ class ProfilePageCubit extends Cubit<ProfilePageState> with BaseCubit{
     try{
       var userData = await _userRepositoryImpl.fetchUserData();
       if(userData!=null){
-        emit(ProfileDataLoaded(userData.localProfile!, userData.name!, userData.userName!));
+        emit(ProfileDataLoaded(userData.profileUrl!, userData.name!, userData.userName!));
       }
 
     }catch(e){

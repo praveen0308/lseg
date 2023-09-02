@@ -1,6 +1,6 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lseg/domain/domain.dart';
 import 'package:lseg/res/res.dart';
@@ -37,6 +37,8 @@ class _RegistrationScreenState extends State<RegistrationScreen>
   @override
   void initState() {
     BlocProvider.of<RegistrationScreenCubit>(context).initRegistration();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
     super.initState();
   }
 

@@ -62,10 +62,10 @@ class FirebaseCategoryServiceImpl extends CategoryService {
   }
 
   @override
-  Future<List<CategoryEntity>> getRecommendedCategories() async {
+  Future<List<CategoryEntity>> getRecommendedCategories({int limit = 10}) async {
     try {
       var response =
-          await contents.orderBy('views', descending: true).get();
+          await contents.orderBy('views', descending: true).limit(limit).get();
       var items = response.docs
           .map((e) => ContentEntity.fromJson(e))
           .toList(growable: true);

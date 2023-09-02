@@ -46,7 +46,7 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
   bool isButtonsVisible = true;
   final TextEditingController _reviewCommentsController =
       TextEditingController();
-  int contentRating = 1;
+  double contentRating = 1;
 
   @override
   void dispose() {
@@ -59,7 +59,7 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
     content = widget.contentModel;
     BlocProvider.of<ContentDetailsScreenCubit>(context)
         .updateContentViewCount(content.contentId!);
-    _scrollController.addListener(() {
+  /*  _scrollController.addListener(() {
       if (_scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
         if (isButtonsVisible != false) {
@@ -74,81 +74,78 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
           });
         }
       }
-    });
+    });*/
     super.initState();
   }
 
   Future<void> _dialogBuilder(BuildContext context) {
-    return showDialog<void>(
+    return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return BlocProvider.value(
-          value: context.read<ContentDetailsScreenCubit>(),
-          child: AlertDialog(
-            title: const Text('Rate Content'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                label("Rating"),
-                RatingBar.builder(
-                  initialRating: 3,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: false,
-                  itemCount: 5,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star_rate_rounded,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {
-                    print(rating);
-                  },
+        return AlertDialog(
+          title: const Text('Rate Content'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              label("Rating"),
+              RatingBar.builder(
+                initialRating: 3,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: false,
+                itemCount: 5,
+                itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => const Icon(
+                  Icons.star_rate_rounded,
+                  color: Colors.amber,
                 ),
-                TextInputFieldView(
-                    label: "Comments(optional)",
-                    textEditingController: _reviewCommentsController)
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
-                child: const Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
+                onRatingUpdate: (rating) {
+                  contentRating=rating;
                 },
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
-                child: const Text('Submit'),
-                onPressed: () {
-                  /*context.read<ContentDetailsScreenCubit>().updateContentReview(
-                      content.contentId!,
-                      ReviewModel(
-                          rating: contentRating,
-                          comment: _reviewCommentsController.text));*/
-                  BlocProvider.of<ContentDetailsScreenCubit>(context).updateContentReview(content.contentId!, ReviewModel(
-                    rating:contentRating,comment: _reviewCommentsController.text
-                  ));
-                  Navigator.of(context).pop();
-                },
-              ),
+              TextInputFieldView(
+                  label: "Comments(optional)",
+                  textEditingController: _reviewCommentsController)
             ],
           ),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Submit'),
+              onPressed: () {
+
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
         );
       },
-    );
+    ).then((value){
+      if(value==true){
+        BlocProvider.of<ContentDetailsScreenCubit>(context).updateContentReview(content.contentId!, ReviewModel(
+            rating:contentRating,comment: _reviewCommentsController.text
+        ));
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
       scrollController: _scrollController,
+      toolbarActionEnabled: false,
       pagePadding: const EdgeInsets.all(0),
       body: BlocListener<ContentDetailsScreenCubit, ContentDetailsScreenState>(
         listener: (context, state) {
@@ -212,7 +209,7 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                                   border: Border.all(color: AppColors.primary),
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                      content.thumbnailUrl!,
+                                      content.contentData!.thumbnailUrl!,
                                     ),
                                     fit: BoxFit.cover,
                                     onError: (error, stackTrace) {
@@ -350,6 +347,53 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                           print(rating);
                         },
                       ),*/
+                      Visibility(
+                        visible: isButtonsVisible,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Visibility(
+                                visible: !content.isPaid! ||
+                                    content.isAlreadyPurchased! ||
+                                    content.isMyContent!,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      /*AutoRouter.of(context).push(ContentViewerRoute(
+                                  args: ContentViewerScreenArgs(
+                                      content.contentUrl!, "")));*/
+                                      showUnitAds();
+                                    },
+                                    child: const Text("View"))),
+                            vGap(),
+                            Visibility(
+                              visible: content.isPaid! &&
+                                  !content.isAlreadyPurchased! &&
+                                  !content.isMyContent!,
+                              child: OutlinedButton(
+                                  onPressed: () {
+                                    /*AutoRouter.of(context).push(ContentViewerRoute(
+                                args: ContentViewerScreenArgs(
+                                    content.contentUrl!, "")));*/
+                                    showUnitAds();
+                                  },
+                                  child: const Text(
+                                    "Preview",
+                                    style: TextStyle(color: AppColors.btnTextColor),
+                                  )),
+                            ),
+                            vGap(),
+                            Visibility(
+                                visible: content.isPaid! &&
+                                    !content.isAlreadyPurchased! &&
+                                    !content.isMyContent!,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      // todo navigate purchase course screen
+                                    },
+                                    child: const Text("Buy"))),
+                          ],
+                        ),
+                      ),
                       OutlinedButton(
                           onPressed: () => _dialogBuilder(context),
                           child: const Text("Review Content")),
@@ -409,7 +453,7 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                 )
               ],
             ),
-            Positioned(
+            /*Positioned(
               bottom: 150,
               left: 16,
               right: 16,
@@ -424,10 +468,10 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                             content.isMyContent!,
                         child: ElevatedButton(
                             onPressed: () {
-                              AutoRouter.of(context).push(ContentViewerRoute(
+                              *//*AutoRouter.of(context).push(ContentViewerRoute(
                                   args: ContentViewerScreenArgs(
-                                      content.contentUrl!, "")));
-                              // showUnitAds();
+                                      content.contentUrl!, "")));*//*
+                              showUnitAds();
                             },
                             child: const Text("View"))),
                     vGap(),
@@ -437,10 +481,10 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                           !content.isMyContent!,
                       child: OutlinedButton(
                           onPressed: () {
-                            AutoRouter.of(context).push(ContentViewerRoute(
+                            *//*AutoRouter.of(context).push(ContentViewerRoute(
                                 args: ContentViewerScreenArgs(
-                                    content.contentUrl!, "")));
-                            // showUnitAds();
+                                    content.contentUrl!, "")));*//*
+                            showUnitAds();
                           },
                           child: const Text(
                             "Preview",
@@ -460,7 +504,7 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                   ],
                 ),
               ),
-            )
+            )*/
           ],
         ),
       ),
@@ -479,12 +523,12 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
           onSkipped: (placementId) {
             print('Video Ad $placementId skipped');
             AutoRouter.of(context).push(ContentViewerRoute(
-                args: ContentViewerScreenArgs(content.contentUrl!, "")));
+                args: ContentViewerScreenArgs(content.contentData!.contentUrl!, "",content.isPaid==true)));
           },
           onComplete: (placementId) {
             print('Video Ad $placementId completed');
             AutoRouter.of(context).push(ContentViewerRoute(
-                args: ContentViewerScreenArgs(content.contentUrl!, "")));
+                args: ContentViewerScreenArgs(content.contentData!.contentUrl!, "",content.isPaid==true)));
           },
           onFailed: (placementId, error, message) =>
               print('Video Ad $placementId failed: $error $message'),

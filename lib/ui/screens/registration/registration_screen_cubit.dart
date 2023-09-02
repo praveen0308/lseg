@@ -23,7 +23,8 @@ class RegistrationScreenCubit extends Cubit<RegistrationScreenState>
 
   Future<void> initRegistration() async {
     var userId = await _authRepositoryImpl.appStorage.getUserID();
-    user = UserModel(userId: userId);
+    var userData = await _authRepositoryImpl.appStorage.getUserData();
+    user = UserModel(userId: userId,email: userData.email,phone: userData.phone,name: userData.name,profileUrl:userData.profileUrl);
   }
 
   Future<void> submitWelcomeData(

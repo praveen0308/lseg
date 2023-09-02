@@ -33,7 +33,7 @@ class BaseScreen extends StatefulWidget {
   final bool? isToolbarStacked;
   final Color? toolbarBackgroundColor;
   final ScrollController? scrollController;
-
+  final bool? toolbarActionEnabled;
   final Function(dynamic data)? navigationCallback;
 
   const BaseScreen({
@@ -61,7 +61,7 @@ class BaseScreen extends StatefulWidget {
         vertical: AppDimens.appVerticalPadding),
     this.toolbarController,
     this.onPrimaryActionClick,
-    this.onSecondaryClick, this.isToolbarStacked=false, this.toolbarBackgroundColor, this.scrollController,
+    this.onSecondaryClick, this.isToolbarStacked=false, this.toolbarBackgroundColor, this.scrollController, this.toolbarActionEnabled=true,
   }) : super(key: key);
 
   @override
@@ -149,6 +149,8 @@ class _BaseScreenState extends State<BaseScreen> with BasePageState {
                           title: widget.title,
                           onPrimaryActionClick: widget.onPrimaryActionClick,
                           onSecondaryClick: widget.onSecondaryClick,
+                    actionEnabled: widget.toolbarActionEnabled==true,
+
                         ),
                 )
               : null,

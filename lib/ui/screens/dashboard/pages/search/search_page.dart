@@ -30,26 +30,57 @@ class _SearchPageState extends State<SearchPage> with BasePageState {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          /*Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all()
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.search_rounded),
+                Expanded(
+                  child: TextField(
+                    controller: searchText,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(0),
+                      hintText: "Search here",
+                    ),
+                  ),
+                ),
+                Container(
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: const Icon(
+                      Icons.search_rounded
+                  ),
+                )
+              ],
+            ),
+          ),*/
           TextField(
             controller: searchText,
             focusNode: fnSearch,
             decoration: InputDecoration(
                 hintText: "Search here",
                 prefixIcon: const Icon(Icons.search_rounded),
+                contentPadding: const EdgeInsets.only(bottom: 16,right: 16,top: 0,),
                 suffix: GestureDetector(
                   onTap: () {
                     AutoRouter.of(context)
                         .push(SearchResultRoute(searchQuery: searchText.text));
                   },
                   child: Container(
+                    margin: const EdgeInsets.only(bottom: 8),
                     padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     decoration: BoxDecoration(
                         color: AppColors.primary,
                         borderRadius: BorderRadius.circular(5)),
-                    child: const Icon(
-                      Icons.search_rounded
-                    ),
+                    child: const Text("Search",style: TextStyle(color: Colors.white),),
                   ),
                 ),
                 border: OutlineInputBorder(

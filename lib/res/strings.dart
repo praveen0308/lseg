@@ -68,6 +68,7 @@ class AppStrings{
   static const logOut = "Log Out";
   static const termsNPrivacyPolicy = "<b>Terms</b> and <b>Privacy Policy</b>";
   static const withdraw = "Withdraw"; 
+  static const withdrawalHistory = "Withdrawal History";
   static const withdrawalMessage = "*Min. Amount: 500. Transferred within 3 business days.";
   static const amount = "Amount";
   static const withdrawalSuccessful = "Withdrawal Successful";

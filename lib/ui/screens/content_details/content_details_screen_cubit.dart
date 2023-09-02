@@ -57,7 +57,7 @@ class ContentDetailsScreenCubit extends Cubit<ContentDetailsScreenState> with Ba
   Future<void> fetchRecommendedContents(String categoryId) async {
     emit(LoadingRecommendedContent());
     try{
-      var result = await _contentRepositoryImpl.getRecommendedContentOfCategory(categoryId);
+      var result = await _contentRepositoryImpl.getRecommendedContentOfCategory(categoryId,limit: 5);
       if(result.isNotEmpty){
         emit(ReceivedRecommendContent("Recommended Contents", result));
       }else{

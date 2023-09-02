@@ -28,6 +28,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> with BasePageState {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -49,6 +50,25 @@ class _LeaderboardPageState extends State<LeaderboardPage> with BasePageState {
             ),
           ),
           Expanded(
+              child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8), border: Border.all()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.upcoming_rounded,
+                  size: 100,
+                ),
+                vGap(),
+                const Text(
+                  "Coming Soon!!!",
+                  style: TextStyle(fontSize: 24),
+                )
+              ],
+            ),
+          )),
+          /*Expanded(
             child: ScrollConfiguration(
               behavior: NoGlowBehaviour(),
               child: ListView.separated(
@@ -62,7 +82,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> with BasePageState {
                 itemCount: earners.length,
               ),
             ),
-          )
+          ),*/
         ],
       ),
     );
@@ -74,10 +94,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> with BasePageState {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Leaderboard Pricing Distribution'),
-          content: const Text("First winner will get 1%,\n"
-              "Second winner will get 0.7\n"
-              "Third winner will get 0.4\n"
-              "Rest will get 0.1",),
+          content: const Text(
+            "You will be paid in two ways either by commission (Paid Notes) and/or Learn and Earn Fund (Free Notes). Our unique scoring system ensures that your efforts are rewarded. The more views, quality, and positive reviews your content receives, the more you earn.",
+          ),
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(

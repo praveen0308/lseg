@@ -21,7 +21,8 @@ class ContentMoreDetails extends StatefulWidget {
 
 class _ContentMoreDetailsState extends State<ContentMoreDetails>
     with BasePageState {
-  final courseTypes = ["Free", "Paid"];
+  // final courseTypes = ["Free", "Paid"];
+  final courseTypes = ["Free"];
   var isPriceAmountEnabled = false;
 
   final _priceAmountController = TextEditingController();
@@ -83,13 +84,13 @@ class _ContentMoreDetailsState extends State<ContentMoreDetails>
                         });
                       },
                     ),
-                    TextInputFieldView(
+                    /*TextInputFieldView(
                       label: "If Paid",
                       textEditingController: _priceAmountController,
                       placeHolder: "Rs. 0",
                       inputType: TextInputType.number,
                       isEnabled: isPriceAmountEnabled,
-                    ),
+                    ),*/
                     label("Browse PDF (Max size 10MB)"),
                     vGap(),
                     GestureDetector(

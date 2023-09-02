@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:lseg/data/data.dart';
+import 'package:lseg/data/entities/content_data_entity.dart';
 import 'package:lseg/data/entities/content_entity.dart';
 import 'package:lseg/data/remote/firebase_data_source/firestore_config.dart';
 import 'package:lseg/data/remote/services/content_service.dart';
@@ -20,13 +21,17 @@ class FirebaseContentServiceImpl extends ContentService {
       List<ContentEntity> items) async {
     List<ContentEntity> newItems = [];
     await Future.forEach(items, (element) async {
-      var thumbnailUrl =
-          await storageRef.child(element.thumbnailUrl!).getDownloadURL();
-      var contentUrl =
-          await storageRef.child(element.contentUrl!).getDownloadURL();
+      var contentData = element.contentData;
+      if (contentData != null) {
+        contentData.contentUrl = await storageRef
+            .child(element.contentData!.contentPath!)
+            .getDownloadURL();
+        contentData.thumbnailUrl = await storageRef
+            .child(element.contentData!.thumbnailPath!)
+            .getDownloadURL();
+      }
 
-      newItems.add(
-          element.copyWith(thumbnailUrl: thumbnailUrl, contentUrl: contentUrl));
+      newItems.add(element.copyWith(contentData: contentData));
     });
     return newItems;
   }
@@ -115,7 +120,8 @@ class FirebaseContentServiceImpl extends ContentService {
   @override
   Future<List<ContentEntity>?> getRecommendedContent(String userId) async {
     try {
-      var response = await contents.orderBy('view_count', descending: true).get();
+      var response =
+          await contents.orderBy('view_count', descending: true).get();
       var items = response.docs
           .map((e) => ContentEntity.fromJson(e))
           .toList(growable: true);
@@ -126,10 +132,12 @@ class FirebaseContentServiceImpl extends ContentService {
   }
 
   @override
-  Future<List<ContentEntity>?> getRecommendedContentOfCategory(String categoryId) async {
+  Future<List<ContentEntity>?> getRecommendedContentOfCategory(
+      String categoryId,{int limit = 10}) async {
     try {
       // var response = await contents.where("category_id",isEqualTo: categoryId).orderBy('views', descending: true).limit(10).get();
-      var response = await contents.where("category_id",isEqualTo: categoryId).get();
+      var response =
+          await contents.where("category_id", isEqualTo: categoryId).limit(limit).get();
 
       var items = response.docs
           .map((e) => ContentEntity.fromJson(e))
@@ -159,8 +167,8 @@ class FirebaseContentServiceImpl extends ContentService {
           newCounts.add(element);
         });
 
-        if(!isExists){
-          newCounts.add(ContentViewCount(contentId: contentId,count: 1));
+        if (!isExists) {
+          newCounts.add(ContentViewCount(contentId: contentId, count: 1));
         }
         batch.set(contentViewHistory.doc(docId),
             viewCountEntity.copyWith(contentViewCount: newCounts).toJson());
@@ -188,8 +196,6 @@ class FirebaseContentServiceImpl extends ContentService {
       throw Exception(e);
     }
   }
-  
-  
 
   @override
   Future<List<ContentEntity>?> getTrendingContents({int limit = 10}) async {
@@ -213,9 +219,9 @@ class FirebaseContentServiceImpl extends ContentService {
   }
 
   @override
-  Future<List<ContentEntity>?> getPopularContents() async {
+  Future<List<ContentEntity>?> getPopularContents({int limit = 10}) async {
     try {
-      var response = await contents.orderBy('views', descending: true).get();
+      var response = await contents.orderBy('views', descending: true).limit(limit).get();
       var items = response.docs
           .map((e) => ContentEntity.fromJson(e))
           .toList(growable: true);
@@ -226,21 +232,25 @@ class FirebaseContentServiceImpl extends ContentService {
   }
 
   @override
-  Future<void> updateContentDetails(ContentEntity contentEntity) {
-    return contents
-        .doc(contentEntity.contentId)
-        .update(contentEntity.toJson())
-        .then((value) => print("Content updated successfully!!!"))
-        .catchError((error) => print("Failed to update content: $error"));
+  Future<void> updateContentDetails(ContentEntity contentEntity) async{
+    try {
+      await contents
+          .doc(contentEntity.contentId)
+          .update(contentEntity.toJson());
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   @override
   Future<ContentEntity?> uploadNewContent(ContentEntity contentEntity) {
     var newContentRef = contents.doc();
+    var contentData = ContentDataEntity(
+      contentPath: "contents/docs/doc_${newContentRef.id}.pdf",
+      thumbnailPath: "contents/thumbnails/picture_${newContentRef.id}.jpg",
+    );
     var finalContent = contentEntity.copyWith(
-        contentId: newContentRef.id,
-        contentUrl: "contents/docs/doc_${newContentRef.id}.pdf",
-        thumbnailUrl: "contents/thumbnails/picture_${newContentRef.id}.jpg");
+        contentId: newContentRef.id, contentData: contentData);
     return newContentRef.set(finalContent.toJson()).then((value) {
       print("Content added successfully!!!");
       return finalContent;
@@ -260,23 +270,23 @@ class FirebaseContentServiceImpl extends ContentService {
   }
 
   @override
-  Future<void> updateContentReview(String contentId,ReviewEntity review) async{
-    try{
+  Future<void> updateContentReview(
+      String contentId, ReviewEntity review) async {
+    try {
       var result = await contents.doc(contentId).get();
       var content = ContentEntity.fromJson(result);
-      if(content.reviews!=null){
+      if (content.reviews != null) {
         content.reviews!.add(review);
         await contents.doc(contentId).update(content.toJson());
-      }else{
+      } else {
         var reviews = List<ReviewEntity>.empty(growable: true);
         reviews.add(review);
-        await contents.doc(contentId).update(content.copyWith(reviews: reviews).toJson());
+        await contents
+            .doc(contentId)
+            .update(content.copyWith(reviews: reviews).toJson());
       }
     } catch (e) {
       throw Exception(e);
     }
-
   }
-
-
 }

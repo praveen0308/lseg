@@ -4,6 +4,7 @@ import 'package:lseg/domain/domain.dart';
 
 class UserEntityMapper extends Mapper<UserEntity?, UserModel?> {
   final dobFormat = "yyyy-MM-dd";
+
   @override
   UserModel? toDomain(UserEntity? entity) {
     return entity == null
@@ -24,7 +25,10 @@ class UserEntityMapper extends Mapper<UserEntity?, UserModel?> {
             occupation: entity.occupation,
             currentBalance: entity.currentBalance,
             country: entity.country,
+            school: entity.school,
             course: entity.course,
+            website: entity.website,
+            paymentDetails: entity.paymentDetails,
             dob: entity.dob != null
                 ? DateFormat(dobFormat).parse(entity.dob!)
                 : null);
@@ -49,8 +53,11 @@ class UserEntityMapper extends Mapper<UserEntity?, UserModel?> {
             gender: domain.gender,
             occupation: domain.occupation,
             currentBalance: domain.currentBalance,
+            school: domain.school,
             country: domain.country,
             course: domain.course,
+            website: domain.website,
+            paymentDetails: domain.paymentDetails,
             dob: domain.dob == null
                 ? null
                 : DateFormat(dobFormat).format(domain.dob!));

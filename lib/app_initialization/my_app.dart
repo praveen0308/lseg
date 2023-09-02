@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
   final ContentService _contentService = FirebaseContentServiceImpl();
   final CategoryService _categoryService = FirebaseCategoryServiceImpl();
 
+  final ThemeData theme =  AppTheme.getAppTheme();
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -43,7 +44,9 @@ class MyApp extends StatelessWidget {
           loadingBuilder: (String msg) => const CustomLoading(type: 1),
         ),
         color: AppColors.primary,
-        theme: AppTheme.getAppTheme(),
+        theme:theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(secondary: Colors.black),
+        ),
         routerConfig: _appRouter.config(),
       ),
     );

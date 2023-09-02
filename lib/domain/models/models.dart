@@ -10,3 +10,4 @@ export 'review_model.dart';
 export 'home_listing.dart';
 export 'category_type.dart';
 export 'base_listing.dart';
+export 'content_data_model.dart';
