@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -52,6 +52,7 @@ dependencies:
   flutter_widget_from_html: ^0.10.3
   hive: ^2.2.3
   equatable: ^2.0.5
+  hive_flutter: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

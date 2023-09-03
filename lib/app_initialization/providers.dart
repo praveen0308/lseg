@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lseg/data/data.dart';
+import 'package:lseg/data/local/categories_box.dart';
 import 'package:lseg/data/remote/firebase_data_source/config_manager.dart';
 import 'package:lseg/data/remote/services/category_service.dart';
 import 'package:lseg/data/remote/services/content_service.dart';
@@ -21,7 +22,7 @@ class AppProviders {
           create: (context) =>
               ContentRepositoryImpl(contentService, appStorage)),
       RepositoryProvider(
-          create: (context) => CategoryRepositoryImpl(categoryService)),
+          create: (context) => CategoryRepositoryImpl(categoryService,CategoriesBox())),
       RepositoryProvider(create: (context) => OrderRepositoryImpl()),
       RepositoryProvider(create: (context) => TransactionRepositoryImpl()),
       RepositoryProvider(

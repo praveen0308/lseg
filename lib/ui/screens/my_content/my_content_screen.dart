@@ -85,8 +85,10 @@ class _MyContentScreenState extends State<MyContentScreen> with BasePageState{
                       itemBuilder: (BuildContext context, int index) {
                         return Column(
                           children: [
-                            ContentItemView(
-                              content: state.contents[index],
+                            Flexible(
+                              child: ContentItemView(
+                                content: state.contents[index],
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),

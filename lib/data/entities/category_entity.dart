@@ -22,7 +22,13 @@ class CategoryEntity {
     _isActive = isActive;
     _order = order;
 }
-
+  CategoryEntity.fromCacheJson(dynamic json) {
+    _id = json['id'] ?? "";
+    _icon = json['icon'] ?? "";
+    _name = json['name'] ?? "";
+    _isActive = json['is_active'] ?? true;
+    _order = json['order'] ?? 0;
+  }
   CategoryEntity.fromJson(dynamic json) {
     _id = json['id'] ?? "";
     _icon = (json as QueryDocumentSnapshot).data().toString().contains("icon") ? json['icon'] : "";

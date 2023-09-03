@@ -133,6 +133,7 @@ class _CreatorProfileScreenState extends State<CreatorProfileScreen>
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
                                     childAspectRatio: 0.689,
+                                    mainAxisSpacing: 12,
                                     crossAxisSpacing: 16),
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,

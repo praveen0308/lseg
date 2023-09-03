@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lseg/domain/domain.dart';
+import 'package:lseg/res/res.dart';
 import 'package:lseg/ui/screens/core/base_page.dart';
 import 'package:lseg/ui/screens/core/base_screen.dart';
 import 'package:lseg/ui/screens/upload_content/pages/content_basic_details.dart';
@@ -43,10 +44,14 @@ class _UploadContentScreenState extends State<UploadContentScreen>
     return BaseScreen(
       applyScroll: false,
       toolbarActionEnabled: false,
+      title: "Upload Content",
       pagePadding: const EdgeInsets.symmetric(horizontal: 16),
       body: BlocConsumer<UploadContentScreenCubit, UploadContentScreenState>(
         listener: (context, state) {
           showLoading(state is LoadingCategories);
+          if (state is UploadContentScreenInitial) {
+            _pageController.jumpToPage(0);
+          }
           if (state is BasicDetailsSubmitted) {
             _pageController.jumpToPage(1);
           }

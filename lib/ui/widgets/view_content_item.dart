@@ -18,7 +18,7 @@ class ContentItemView extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(0),
         width: 150,
-        height: 192,
+        height: 215,
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.greyLight),
           borderRadius: BorderRadius.circular(8)
@@ -53,28 +53,25 @@ class ContentItemView extends StatelessWidget {
                   Text(
 
                     content.title??"",
+                    maxLines: 1,
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  FittedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(content.creator ?? "",
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            )),
-                        Text(content.isPaid! ? "PAID" : "FREE",
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ))
-                      ],
-                    ),
-                  )
+                  Text(content.creator ?? "",
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 14,
+
+                        fontWeight: FontWeight.w400,
+                      )),
+                  Text(content.isPaid! ? "PAID" : "FREE",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ))
+
                 ],
               ),
             )

@@ -15,13 +15,16 @@ class LeaderboardPage extends StatefulWidget {
 class _LeaderboardPageState extends State<LeaderboardPage> with BasePageState {
   final earners = [];
 
+  final amount = 10000;
   @override
   void initState() {
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 10; i++) {
       earners.add(i);
     }
     super.initState();
   }
+
+  final List<String> participants = ["Praveen","Shubham","Vinay","Abhishek","Deepak","Saurabh","Pavan","Raj","Narendra","Sonu"];
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +77,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> with BasePageState {
               child: ListView.separated(
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return LeaderBoardItemView(rank: index + 1);
+                  return LeaderBoardItemView(rank: index + 1, name: participants[index], amount: amount/(index+1),);
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return const Divider();

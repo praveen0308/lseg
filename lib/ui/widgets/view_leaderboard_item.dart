@@ -7,8 +7,10 @@ import 'package:lseg/res/colors.dart';
 
 class LeaderBoardItemView extends StatelessWidget {
   final int rank;
+  final String name;
+  final num amount;
 
-  const LeaderBoardItemView({super.key, required this.rank});
+  LeaderBoardItemView({super.key, required this.rank, required this.name, required this.amount});
 
   Widget getLeading() {
     switch (rank) {
@@ -40,6 +42,7 @@ class LeaderBoardItemView extends StatelessWidget {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,7 +63,7 @@ class LeaderBoardItemView extends StatelessWidget {
           ),
           Expanded(
               child: Text(
-            "Name",
+            name.toString(),
             style:
                 GoogleFonts.dmSans(fontWeight: FontWeight.w700, fontSize: 20),
           )),
@@ -71,9 +74,9 @@ class LeaderBoardItemView extends StatelessWidget {
             color: Colors.black,
             height: double.maxFinite,
           ),
-          Text("10000",
+          Text("₹${amount.toStringAsFixed(2)}",
               style: GoogleFonts.dmSans(
-                  fontWeight: FontWeight.normal, fontSize: 15))
+                  fontWeight: FontWeight.bold, fontSize: 16))
         ],
       ),
     );

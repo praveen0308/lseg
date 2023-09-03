@@ -47,6 +47,8 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
   final TextEditingController _reviewCommentsController =
       TextEditingController();
   double contentRating = 1;
+  final List<ContentModel> recommendedContents =
+      List<ContentModel>.empty(growable: true);
 
   @override
   void dispose() {
@@ -59,7 +61,7 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
     content = widget.contentModel;
     BlocProvider.of<ContentDetailsScreenCubit>(context)
         .updateContentViewCount(content.contentId!);
-  /*  _scrollController.addListener(() {
+    /*  _scrollController.addListener(() {
       if (_scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
         if (isButtonsVisible != false) {
@@ -101,7 +103,7 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
-                  contentRating=rating;
+                  contentRating = rating;
                 },
               ),
               TextInputFieldView(
@@ -125,18 +127,19 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
               ),
               child: const Text('Submit'),
               onPressed: () {
-
                 Navigator.of(context).pop(true);
               },
             ),
           ],
         );
       },
-    ).then((value){
-      if(value==true){
-        BlocProvider.of<ContentDetailsScreenCubit>(context).updateContentReview(content.contentId!, ReviewModel(
-            rating:contentRating,comment: _reviewCommentsController.text
-        ));
+    ).then((value) {
+      if (value == true) {
+        BlocProvider.of<ContentDetailsScreenCubit>(context).updateContentReview(
+            content.contentId!,
+            ReviewModel(
+                rating: contentRating,
+                comment: _reviewCommentsController.text));
       }
     });
   }
@@ -157,6 +160,10 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
           if (state is ContentReviewUpdated) {
             showToast(
                 "Content review updated successfully!!!", ToastType.success);
+          }
+          if (state is ReceivedRecommendContent) {
+            recommendedContents.clear();
+            recommendedContents.addAll(state.items);
           }
           if (state is UpdateContentReviewFailed) {
             showToast(state.msg, ToastType.error);
@@ -261,9 +268,15 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                                               creatorUsername:
                                                   content.creatorUsername!));
                                     },
-                                    child: Text(content.creator ?? "Creator")),
+                                    child: Text(
+                                      content.creator ?? "Creator",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    )),
                                 Text(content.format ?? "Format"),
-                                const Text("Pages"),
+                                // const Text("Pages"),
                                 Text(content.getAddedOn().toString()),
                                 Text(content.category ?? "Category"),
                               ],
@@ -378,7 +391,8 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                                   },
                                   child: const Text(
                                     "Preview",
-                                    style: TextStyle(color: AppColors.btnTextColor),
+                                    style: TextStyle(
+                                        color: AppColors.btnTextColor),
                                   )),
                             ),
                             vGap(),
@@ -400,54 +414,60 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                       divider(),
 
                       BlocBuilder<ContentDetailsScreenCubit,
-                          ContentDetailsScreenState>(builder: (context, state) {
-                        if (state is LoadingRecommendedContent) {
-                          return Container(
-                            padding: const EdgeInsets.all(12),
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(8),
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(5)),
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.all(8),
-                                      height: 150,
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.all(8),
-                                      height: 150,
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          );
-                        }
-                        if (state is ReceivedRecommendContent) {
-                          return BaseListingSectionView(
-                              type: CategoryType.recommendedContent,
-                              title: state.title,
-                              items: state.items);
-                        }
+                          ContentDetailsScreenState>(
+                        builder: (context, state) {
+                          if (state is LoadingRecommendedContent) {
+                            return Container(
+                              padding: const EdgeInsets.all(12),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(8),
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(5)),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(8),
+                                        height: 150,
+                                        width: 120,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.all(8),
+                                        height: 150,
+                                        width: 120,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                          if (state is ReceivedRecommendContent) {
+                            return BaseListingSectionView(
+                                type: CategoryType.recommendedContent,
+                                title: state.title,
+                                items: state.items);
+                          }
 
-                        return Container();
-                      })
+                          return Container();
+                        },
+                        buildWhen: (previous, current) {
+                          return current is LoadingRecommendedContent ||
+                              current is ReceivedRecommendContent;
+                        },
+                      )
                     ],
                   ),
                 )
@@ -468,9 +488,9 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                             content.isMyContent!,
                         child: ElevatedButton(
                             onPressed: () {
-                              *//*AutoRouter.of(context).push(ContentViewerRoute(
+                              */ /*AutoRouter.of(context).push(ContentViewerRoute(
                                   args: ContentViewerScreenArgs(
-                                      content.contentUrl!, "")));*//*
+                                      content.contentUrl!, "")));*/ /*
                               showUnitAds();
                             },
                             child: const Text("View"))),
@@ -481,9 +501,9 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
                           !content.isMyContent!,
                       child: OutlinedButton(
                           onPressed: () {
-                            *//*AutoRouter.of(context).push(ContentViewerRoute(
+                            */ /*AutoRouter.of(context).push(ContentViewerRoute(
                                 args: ContentViewerScreenArgs(
-                                    content.contentUrl!, "")));*//*
+                                    content.contentUrl!, "")));*/ /*
                             showUnitAds();
                           },
                           child: const Text(
@@ -523,12 +543,14 @@ class _ContentDetailsScreenState extends State<ContentDetailsScreen>
           onSkipped: (placementId) {
             print('Video Ad $placementId skipped');
             AutoRouter.of(context).push(ContentViewerRoute(
-                args: ContentViewerScreenArgs(content.contentData!.contentUrl!, "",content.isPaid==true)));
+                args: ContentViewerScreenArgs(content.contentData!.contentUrl!,
+                    "", content.isPaid == true)));
           },
           onComplete: (placementId) {
             print('Video Ad $placementId completed');
             AutoRouter.of(context).push(ContentViewerRoute(
-                args: ContentViewerScreenArgs(content.contentData!.contentUrl!, "",content.isPaid==true)));
+                args: ContentViewerScreenArgs(content.contentData!.contentUrl!,
+                    "", content.isPaid == true)));
           },
           onFailed: (placementId, error, message) =>
               print('Video Ad $placementId failed: $error $message'),

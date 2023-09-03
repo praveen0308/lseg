@@ -1,4 +1,4 @@
-package com.example.lseg
+package com.lseg.learnandearn
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -33,7 +33,7 @@ class BaseToolbar extends StatelessWidget {
                 AutoRouter.of(context).pop();
               },
               child: const Icon(Icons.arrow_back_rounded)),
-          Text(title ?? ""),
+          Text(title ?? "",style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w700),),
           Visibility(
             visible: actionEnabled==true,
             child: GestureDetector(

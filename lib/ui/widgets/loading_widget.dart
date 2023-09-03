@@ -66,10 +66,18 @@ class _CustomLoadingState extends State<CustomLoading>
 
   Widget _buildLoadingTwo() {
     return Stack(alignment: Alignment.center, children: [
-      Image.asset(
-        AppImages.icLogo,
-        height: 70,
-        width: 70,
+      CircleAvatar(
+        backgroundColor: Colors.white70
+        ,
+        radius: 40,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(
+            AppImages.icLogo2,
+            height: 70,
+            width: 70,
+          ),
+        ),
       ),
       RotationTransition(
         alignment: Alignment.center,

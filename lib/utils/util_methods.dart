@@ -125,13 +125,28 @@ class LauncherUtils {
   }
 
   static Future<void> openEmail(String emailId,String subject,String body) async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: emailId,
+      query: encodeQueryParameters(<String, String>{
+        'subject': subject,
+        'body': body,
+      }),
+    );
     Uri uri = Uri.parse('mailto:$emailId?subject=$subject&body=$body');
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+    if (await canLaunchUrl(emailLaunchUri)) {
+      await launchUrl(emailLaunchUri);
 
     } else {
       throw 'Could not open the email.';
     }
+  }
+
+  static String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) =>
+    '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 
   static Future<void> openWebsite(String url) async {

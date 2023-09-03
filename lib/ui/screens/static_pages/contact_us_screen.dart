@@ -31,7 +31,7 @@ class ContactUsScreen extends StatelessWidget {
                 border: Border.all(color: AppColors.primary, width: 2)),
             child: Column(
               children: [
-                getContactUsInfoRow(
+                if(data.phone != null && data.phone!.isNotEmpty)getContactUsInfoRow(
                     const Icon(
                       Icons.call,
                       size: 32,
