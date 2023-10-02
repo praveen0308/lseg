@@ -64,23 +64,25 @@ class _PurchasedContentScreenState extends State<PurchasedContentScreen> {
                 );
               }
               if(state is ReceivedContents){
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: ScrollConfiguration(
-                    behavior: NoGlowBehaviour(),
-                    child: GridView.builder(
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: ScrollConfiguration(
+                      behavior: NoGlowBehaviour(),
+                      child: GridView.builder(
 
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.689,
-                          crossAxisSpacing: 16),
-                      shrinkWrap: true,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.689,
+                            crossAxisSpacing: 16),
+                        shrinkWrap: true,
 
-                      scrollDirection: Axis.vertical,
-                      itemCount: state.contents.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ContentItemView(content: state.contents[index],);
-                      },
+                        scrollDirection: Axis.vertical,
+                        itemCount: state.contents.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ContentItemView(content: state.contents[index],);
+                        },
+                      ),
                     ),
                   ),
                 );

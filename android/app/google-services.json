@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "477952135910-khd776t7bhs7thuvduvfs4hs427gtt99.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lseg.learnandearn",
+            "certificate_hash": "8240863e0e5aaa00c95000b6ecbf65daadc5bcc5"
+          }
+        },
+        {
           "client_id": "477952135910-frlqlfbihkps2tu4608ik6t7n82j4c2o.apps.googleusercontent.com",
           "client_type": 3
         }

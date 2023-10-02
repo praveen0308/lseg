@@ -69,26 +69,29 @@ class _CategoryContentScreenState extends State<CategoryContentScreen> with Base
                 );
               }
               if (state is ReceivedContents) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                  child: ScrollConfiguration(
-                    behavior: NoGlowBehaviour(),
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.8,
-                              crossAxisSpacing: 16,
-                            mainAxisSpacing: 8
-                          ),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: state.contents.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ContentItemView(
-                          content: state.contents[index],
-                        );
-                      },
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                    child: ScrollConfiguration(
+                      behavior: NoGlowBehaviour(),
+                      child: GridView.builder(
+
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.8,
+                                crossAxisSpacing: 16,
+                              mainAxisSpacing: 8
+                            ),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: state.contents.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ContentItemView(
+                            content: state.contents[index],
+                          );
+                        },
+                      ),
                     ),
                   ),
                 );

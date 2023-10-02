@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:lseg/data/data.dart';
 import 'package:lseg/data/entities/content_data_entity.dart';
@@ -23,12 +24,24 @@ class FirebaseContentServiceImpl extends ContentService {
     await Future.forEach(items, (element) async {
       var contentData = element.contentData;
       if (contentData != null) {
-        contentData.contentUrl = await storageRef
-            .child(element.contentData!.contentPath!)
-            .getDownloadURL();
-        contentData.thumbnailUrl = await storageRef
-            .child(element.contentData!.thumbnailPath!)
-            .getDownloadURL();
+        try{
+          contentData.contentUrl = await storageRef
+              .child(element.contentData!.contentPath!)
+              .getDownloadURL();
+        } catch(e){
+          contentData.contentUrl = "";
+          debugPrint(e.toString());
+        }
+
+        try{
+          contentData.thumbnailUrl = await storageRef
+              .child(element.contentData!.thumbnailPath!)
+              .getDownloadURL();
+        } catch(e){
+          contentData.thumbnailUrl = "";
+          debugPrint(e.toString());
+        }
+
       }
 
       newItems.add(element.copyWith(contentData: contentData));

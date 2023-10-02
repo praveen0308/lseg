@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.1+2
+version: 1.0.2+3
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -53,6 +53,7 @@ dependencies:
   hive: ^2.2.3
   equatable: ^2.0.5
   hive_flutter: ^1.1.0
+  firebase_crashlytics: ^3.3.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

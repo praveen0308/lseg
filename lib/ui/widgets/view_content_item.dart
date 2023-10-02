@@ -35,11 +35,21 @@ class ContentItemView extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Colors.grey,
+                    height: 140,
+                    width: 140,
+                    color: Colors.black26,
                     alignment: Alignment.center,
-                    child: const Text(
-                      ':X Not Found!',
-                      style: TextStyle(fontSize: 18),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.error,size: 50,),
+                        SizedBox(height: 8),
+                        Text(
+                          'Image not found!',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
                     ),
                   );
                 },

@@ -68,78 +68,80 @@ class _MyContentScreenState extends State<MyContentScreen> with BasePageState{
                 );
               }
               if (state is ReceivedContents) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 0.0, vertical: 8),
-                  child: ScrollConfiguration(
-                    behavior: NoGlowBehaviour(),
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.5,
-                              crossAxisSpacing: 8),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: state.contents.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            Flexible(
-                              child: ContentItemView(
-                                content: state.contents[index],
+                return Expanded(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 0.0, vertical: 8),
+                    child: ScrollConfiguration(
+                      behavior: NoGlowBehaviour(),
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.5,
+                                crossAxisSpacing: 8),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: state.contents.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Column(
+                            children: [
+                              Flexible(
+                                child: ContentItemView(
+                                  content: state.contents[index],
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        context.read<MyContentScreenCubit>().deleteContent(state.contents[index].contentId!);
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        child: const Icon(
-                                          Icons.delete,
-                                          color: Colors.white,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          context.read<MyContentScreenCubit>().deleteContent(state.contents[index].contentId!);
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius:
+                                                  BorderRadius.circular(8)),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: (){
-                                        // context.read<MyContentScreenCubit>().deleteContent(state.contents[index].contentId!);
-                                        AutoRouter.of(context).push(EditContentRoute(content: state.contents[index]));
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(5),
-                                        decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        child: const Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          // context.read<MyContentScreenCubit>().deleteContent(state.contents[index].contentId!);
+                                          AutoRouter.of(context).push(EditContentRoute(content: state.contents[index]));
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              borderRadius:
+                                                  BorderRadius.circular(8)),
+                                          child: const Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        );
-                      },
+                                  ],
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
                 );
